@@ -1,0 +1,16 @@
+---
+# Variables for ec2 role
+
+key_name: "{{ ssh_key }}"
+security_group: "{{ sg_id }}"
+type: "t2.micro"
+ami_id: "{{ ami_id }}"
+subnet_id: "{{ subnet_id }}"
+count: 1
+region: "us-east-1"
+tag_name: "{{ tag_name }}"
+iam_role: "role-deploy"
+aws_access_key: ""
+aws_secret_key: ""
+storage: "200"
+

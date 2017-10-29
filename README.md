@@ -1,7 +1,7 @@
 # ansible-m31
 
 Run, pack, and provision your infrastructure with Ansible code against Amazon's Cloud (AWS).
-Test your code on-the-fly with ansible-kitchen.
+Test your code on-the-fly with ansible-kitchen, and docker for mac.
 
 
 # Development Setup
@@ -12,7 +12,7 @@ Test your code on-the-fly with ansible-kitchen.
 * Please also setup your [aws configuration] (http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
 
-## rbenv instructions
+## rbenv instructions (v2.3.2)
 * Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby version to >= v2.2.2
 ```
 brew install rbenv

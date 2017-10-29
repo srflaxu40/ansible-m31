@@ -5,6 +5,8 @@
 
 * This expects you've installed [Homebrew](https://brew.sh/).
 * Install rbenv with the instructions below.
+* This tutorial expects that you ahve installed [Docker for Mac](https://docs.docker.com/docker-for-mac/install/).
+
 
 ## rbenv instructions
 * Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby version to >= v2.2.2
@@ -25,7 +27,7 @@ rbenv exec kitchen -h
 ## Setting up your local virtualenv
 
 1. Install virtualenv
-  - (sudo) `pip install virtualenv`
+  - `(sudo) pip install virtualenv`
 2. Activate project
   - `source ./ansible/bin/activate`
 3. Install bundler:

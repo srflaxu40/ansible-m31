@@ -9,6 +9,7 @@ Test your code on-the-fly with ansible-kitchen.
 * This repo expects you've installed [Homebrew](https://brew.sh/).
 * Install rbenv with the instructions below.
 * This repo expects that you have installed [Docker for Mac](https://docs.docker.com/docker-for-mac/install/).
+* Please also setup your [aws configuration] (http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
 
 ## rbenv instructions

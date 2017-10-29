@@ -34,10 +34,6 @@ rbenv exec kitchen -h
   - `(sudo) pip install virtualenv`
 2. Activate project
   - `source ./ansible/bin/activate`
-3. Install bundler:
-  - `(sudo) gem install bundler`
-4. Install gems:
-  - `(sudo) bundle install`
 
 * You should now be in the ansible project with your pip modules installed.
 

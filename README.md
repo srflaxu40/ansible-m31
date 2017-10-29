@@ -41,7 +41,7 @@ rbenv exec kitchen -h
 
 * Update the `ansible_env` file to your respective environment variables for your AWS account before attempting test kitchen.
   Don't forget to source it:
-  `source ansible_env`
+`source ansible_env`
 
 * This will run ${ROLE} in your ${ROLE}.yml file specified in ${HOSTFILE}.  This is great for just testing out configuration changes
   against a lightweight runtime container.  *Packer* does the actual packing into AMIs.

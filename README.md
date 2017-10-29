@@ -13,12 +13,11 @@ Test your code on-the-fly with ansible-kitchen, and docker for mac.
 
 
 ## rbenv instructions (v2.3.2)
-* Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby version to >= v2.2.2
+* Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby to v2.3.2.v
 ```
 brew install rbenv
 rbenv init; # Paste output into your ~/.bash_profile
 rbenv install 2.3.2
-rbenv local 2.3.2
 ```
 
 * Now install your gems
@@ -29,11 +28,20 @@ rbenv exec kitchen -h
 ```
 
 ## Setting up your local virtualenv
+1. Install [PyEnv](https://github.com/pyenv/pyenv#homebrew-on-mac-os-x)
+   - Now install python v2.7.10
+     `pyenv install 2.7.10`
 
-1. Install virtualenv
-  - `(sudo) pip install virtualenv`
-2. Activate project
-  - `source ./ansible/bin/activate`
+2. Install virtualenv
+  - `brew install pyenv-virtualenv`
+  * Add content to your ~/.bash_profile (one-time only)
+```
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+
+3. Activate project
+  - `pyenv activate ansible`
 
 * You should now be in the ansible project with your pip modules installed.
 

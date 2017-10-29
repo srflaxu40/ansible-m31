@@ -1,16 +1,15 @@
 ---
 # Variables for ec2 role
 
-key_name: "{{ ssh_key }}"
-security_group: "{{ sg_id }}"
+key_name: "{{ lookup('env','SSH_KEY') }}"
+security_group: "{{ lookup('env','SG_ID') }}"
 type: "t2.micro"
-ami_id: "{{ ami_id }}"
-subnet_id: "{{ subnet_id }}"
+ami_id: "{{ lookup('env','AMI_ID') }}"
+subnet_id: "{{ lookup('env','SUBNET_ID') }}"
+tag_name: "{{ lookup('env','TAG_NAME') }}"
+tag_environment: "{{ lookup('env','TAG_ENV') }}"
 count: 1
 region: "us-east-1"
-tag_name: "{{ tag_name }}"
 iam_role: "role-deploy"
-aws_access_key: ""
-aws_secret_key: ""
-storage: "200"
+storage: "8"
 

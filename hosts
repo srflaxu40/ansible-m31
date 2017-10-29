@@ -1,4 +1,4 @@
 [default]
-localhost ansible_connection=local
+localhost ansible_connection=local ansible_python_interpreter=python
 ansible_connection=ssh 
-ansible_ssh_user=vagrant
+ansible_ssh_user=ubuntu

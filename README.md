@@ -1,6 +1,6 @@
 # ansible-m31
 
-Run, pack, and utilize your ansible code against Amazon's Cloud (AWS).
+Run, pack, and provision your infrastructure with ansible code against Amazon's Cloud (AWS).
 Test your code on-the-fly with ansible-kitchen.
 
 

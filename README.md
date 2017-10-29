@@ -1,11 +1,14 @@
 # ansible-m31
 
+Run, pack, and utilize your ansible code against Amazon's Cloud (AWS).
+Test your code on-the-fly with ansible-kitchen.
+
 
 # Development Setup
 
-* This expects you've installed [Homebrew](https://brew.sh/).
+* This repo expects you've installed [Homebrew](https://brew.sh/).
 * Install rbenv with the instructions below.
-* This tutorial expects that you ahve installed [Docker for Mac](https://docs.docker.com/docker-for-mac/install/).
+* This repo expects that you ahve installed [Docker for Mac](https://docs.docker.com/docker-for-mac/install/).
 
 
 ## rbenv instructions

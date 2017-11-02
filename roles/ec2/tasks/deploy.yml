@@ -23,7 +23,7 @@
     instance_tags:
         Name: "{{ tag_name }}-{{ tag_environment }}"
     assign_public_ip: yes
-    termination_protection: yes
+    termination_protection: no
     user_data: |
         #!/bin/bash
         export host_name_full=`curl http://169.254.169.254/latest/meta-data/hostname`

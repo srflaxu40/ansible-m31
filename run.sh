@@ -1,21 +1,23 @@
 #!/bin/bash
 
-id_rsa=$3
+id_rsa=$1
 
 source ansible_env
 
-ansible-playbook -i ./hosts ec2.yml -vvvv
+export TAG_NAME=openvpn
+export TAG_ENV=development
+
+#ansible-playbook -i ./hosts ec2.yml -vvvvv -u ubuntu --tags "configure,deploy"
 
 echo "Waiting for server to boot up in order to ssh..."
 
-sleep 30
+#sleep 30
 
-exit
+export ANSIBLE_HOST_KEY_CHECKING=False
 
-#export ANSIBLE_HOST_KEY_CHECKING=False
-
-#ansible-playbook -i ec2.py provision_aws.yml --private-key="${id_rsa}" -vvvv -u ubuntu -t deploy
-#ansible-playbook -i ec2.py provision_aws.yml --private-key="${id_rsa}" -vvvv -u ubuntu -t configure
-
-#ansible-playbook -i ec2.py tests.yml --private-key="${id_rsa}" -vvvv -u ubuntu -t testenv
-
+ansible-playbook openvpn.yml -i ec2.py \
+                             -u ubuntu \
+                             --private-key=$id_rsa \
+                             -vvvv \
+                             --extra-vars "tag_name=${TAG_NAME} tag_environment=${TAG_ENV}" \
+                             --tags "configure,deploy"

@@ -1,0 +1,12 @@
+# task: configure
+
+- name: Update repos and install openvpn
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+       - openvpn
+       - easy-rsa
+
+

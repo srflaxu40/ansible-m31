@@ -1,0 +1,6 @@
+# task: configure
+
+- name: apt-get update 
+  raw: apt-get update -qq 
+- name: Install python 2.7 
+  raw: apt-get install -qq python2.7 python-simplejson 

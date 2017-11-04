@@ -1,0 +1,11 @@
+---
+# file: openvpn.yml
+- name: Configure and deploy openvpn
+  hosts: tag_Name_{{ tag_name }}_{{ tag_environment }}
+  remote_user: ubuntu
+  become: yes
+  gather_facts: False
+  roles:
+    - python
+    - hosts
+    - openvpn

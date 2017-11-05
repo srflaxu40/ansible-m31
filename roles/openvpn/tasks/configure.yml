@@ -9,4 +9,38 @@
        - openvpn
        - easy-rsa
 
+- name: Copy easy-rsa template
+  shell: make-cadir /home/{{ ansible_ssh_user }}//openvpn-ca
+  args:
+    executable: /bin/bash
+    creates: /home/{{ ansible_ssh_user }}//openvpn-ca
 
+- name: copy over vars
+  template: src=vars.j2 dest=/home/{{ ansible_ssh_user }}//openvpn-ca/vars mode=0777
+            owner={{ ansible_user }}
+
+- name: Setup bash script for ca building
+  template: src=build-ca.j2 dest=/home/{{ ansible_ssh_user }}//openvpn-ca/run_ca_building.sh mode=0755
+            owner={{ ansible_user }}
+
+- name: Build vars, cleanup and build ca
+  expect:
+    command: bash /home/{{ ansible_ssh_user }}/openvpn-ca/run_ca_building.sh
+    chdir: /home/{{ ansible_ssh_user }}/openvpn-ca/
+    responses:
+      Country Name:
+        - "{{ org_country }}"
+      State or Province Name:
+        - "{{ org_province }}"
+      Locality Name:
+        - "{{ org_location }}" 
+      Organization Name:
+        - "{{ org_name }}"
+      Organizational Unit Name:
+        - "Company"
+      Common Name:
+        - "Prominent Edge CA"
+      Name \[server\]:
+        - "Server"
+      Email Address:
+        - "dummyemail@acme.com"

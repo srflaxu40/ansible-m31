@@ -44,3 +44,122 @@
         - "Server"
       Email Address:
         - "dummyemail@acme.com"
+
+- name: Setup bash script to generate server cert and key pair
+  template: src=build-cert.j2 dest=/home/{{ ansible_ssh_user }}//openvpn-ca/build_cert_and_keys.sh mode=0755
+            owner={{ ansible_user }}
+
+- name: Generate server cert and keypair
+  expect:
+    command: bash /home/{{ ansible_ssh_user }}/openvpn-ca/build_cert_and_keys.sh
+    chdir: /home/{{ ansible_ssh_user }}/openvpn-ca/
+    responses:
+      Country Name:
+        - "{{ org_country }}"
+      State or Province Name:
+        - "{{ org_province }}"
+      Locality Name:
+        - "{{ org_location }}" 
+      Organization Name:
+        - "{{ org_name }}"
+      Organizational Unit Name:
+        - "Company"
+      Common Name:
+        - "Prominent Edge CA"
+      Name \[server\]:
+        - "Server"
+      Email Address:
+        - "dummyemail@acme.com"
+      A challenge password:
+        - ""
+      Sign the certificate:
+        - "y"
+      requests certified, commit:
+        - "y"
+      An optional company name:
+        - ""
+
+
+- name: Generate Diffie-Hellman keys
+  template: src=diffie-hellman.j2 dest=/home/{{ ansible_ssh_user }}//openvpn-ca/diffie_hellman_keys.sh mode=0755
+            owner={{ ansible_user }}
+
+- name: Generate server cert and keypair
+  expect:
+    command: bash /home/{{ ansible_ssh_user }}/openvpn-ca/diffie_hellman_keys.sh
+    chdir: /home/{{ ansible_ssh_user }}/openvpn-ca/
+    timeout: 180
+    responses:
+      None:
+        - ""
+
+- name: Generate Client cert and KP
+  copy: src=generate_cert_and_kp.sh dest=/home/{{ ansible_ssh_user }}//openvpn-ca/generate_cert_and_kp.sh mode=0755
+            owner={{ ansible_user }}
+
+- name: Generate server cert and keypair
+  shell: /home/{{ ansible_ssh_user }}/openvpn-ca/generate_cert_and_kp.sh
+  args:
+    chdir: /home/{{ ansible_ssh_user }}/openvpn-ca/
+
+- name: Copy over server configuration
+  copy: src=server.conf dest=/etc/openvpn/server.conf mode=0644 owner=root group=root
+
+- name: Allow server to route traffic
+  copy: src=sysctl.conf dest=/etc/sysctl.conf mode=0644 owner=root group=root
+
+- name: Setup ufw firewall rules
+  copy: src=before.rules dest=/etc/ufw/before.rules mode=0644 owner=root group=root
+
+- name: Create ufw defaults to allow allow forwarded packets
+  copy: src=ufw.defaults dest=/etc/default/ufw mode=0644 owner=root group=root
+
+- name: Open ports for ufw as well as ssh and enable
+  copy: src=allow_enable_ufw.sh dest=/tmp/allow_enable_ufw.sh mode=0755 owner=root group=root
+
+- name: Run shell script to allow and enable ufw access
+  shell: /tmp/allow_enable_ufw.sh
+
+- name: Start openvpn server
+  systemd: state=started name=openvpn@server
+
+- name: Start openvpn server
+  systemd:
+    name: openvpn@server
+    enabled: yes
+    masked: no
+
+- name: Create client config directory
+  file:
+    path: /home/{{ ansible_ssh_user }}/client-configs/files
+    state: directory
+    mode: 0700
+
+- name: get public IP
+  ipify_facts:
+  register: public_ip
+
+- name: Copy over base configuration`
+  template: src=base.conf.j2 dest=/home/{{ ansible_ssh_user }}/client-configs/base.conf mode=0755
+            owner={{ ansible_user }}
+
+- name: Copy Over configuration script
+  copy: src=make_config.sh dest=/home/{{ ansible_ssh_user }}/client-configs/make_config.sh  mode=0755 owner=root group=root
+
+- name: Ensure ownership for downstream profile creations
+  file:
+    path: /home/{{ ansible_ssh_user }}/client-configs
+    owner: "{{ ansible_ssh_user }}"
+    mode: 0755
+
+- name: Ensure ownership for downstream profile creations
+  file:
+    path: /home/{{ ansible_ssh_user }}/openvpn-ca
+    owner: "{{ ansible_ssh_user }}"
+    mode: 0755
+
+- name: Create client configs
+  shell: /home/{{ ansible_ssh_user }}/client-configs/make_config.sh client1
+  become: true
+  args:
+    chdir: /home/{{ ansible_ssh_user }}/client-configs/

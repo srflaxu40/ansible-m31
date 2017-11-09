@@ -1,0 +1,7 @@
+#!/bin/bash 
+
+source /home/{{ ansible_ssh_user }}/openvpn-ca/vars
+
+/home/{{ ansible_ssh_user }}/openvpn-ca/build-dh
+
+openvpn --genkey --secret keys/ta.key

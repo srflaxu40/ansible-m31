@@ -57,6 +57,12 @@ eval "$(pyenv virtualenv-init -)"
   - USAGE:
 ```
 ./openvpn.sh <path to your key for this server>
+
+```
+
+## Afterward, copy your client1.ovpn file to your local box and download [tunnelblik](https://tunnelblick.net/downloads.html)
+```
+scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@10.1.2.212:~/client-configs/files/client1.ovpn .
 ```
 
 * kubernetes - This is meant to be run with packer.  Packer templates are under the `./packer` directory.

@@ -52,8 +52,15 @@ eval "$(pyenv virtualenv-init -)"
   - The reason for this is to avoid any weirdness having to get new IPs alongside packer, etc, when an instance
     exists behind a launch config; openvpn configurations for clients / server require static IPs.
   - Please set your AWS keys in your credentials keychain as noted above in Development Setup.
+  - Also, please update `ansible_env` to values specific to your VPC, Subnet (must be public for a VPN), Security Groups,
+    IAM Role, etc...
+  - USAGE:
+```
+./openvpn.sh <path to your key for this server>
+```
 
 * kubernetes - This is meant to be run with packer.  Packer templates are under the `./packer` directory.
+  - This play is used in conjunction with packer to create a kube master via `kubeadm init`, and join slaves via `kubeadm join`.
 
 ---
 

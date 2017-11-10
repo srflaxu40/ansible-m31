@@ -47,6 +47,18 @@ eval "$(pyenv virtualenv-init -)"
 
 ## Roles:
 
+## OpenVPN
+
+* This does not create your VPC for you.
+* This does not create any subnets, but it assumes the subnet you specify in `ansible_env` prior to source'ing it
+  has a route table that connects it to your VPC's internet gateway.
+* This supports only the AWS cloud.
+* Example Route Table for a Public Subnet:
+![Alt text](/images/public_subnet.png?raw=true "Example Route Table.")
+
+* Example Security Group that gives access to 443 for VPN access, ssh access to the VPN, and also allows traffic to it from an internal security group:
+![Alt text](/images/vpn_sg.png?raw=true "Example VPN Security Group.")
+
 * openvpn - This requires running the openvpn.sh script _after_ setting your vars in `ansible_env`.
   - Please note that this spins up an ec2 instance first, and then provisions it with the openvpn play/role.
   - The reason for this is to avoid any weirdness having to get new IPs alongside packer, etc, when an instance

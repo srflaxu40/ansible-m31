@@ -52,6 +52,8 @@ eval "$(pyenv virtualenv-init -)"
 * This does not create your VPC for you.
 * This does not create any subnets, but it assumes the subnet you specify in `ansible_env` prior to source'ing it
   has a route table that connects it to your VPC's internet gateway.
+* Important - this has only been tested on the base Ubuntu AMI for 16.04 in us-east-1 (ami-cd0f5cb6).  Running it on
+  other AMIs may require modifications / forking this repository.
 * This supports only the AWS cloud.
 * Example Route Table for a Public Subnet:
 ![Alt text](/images/public_subnet.png?raw=true "Example Route Table.")

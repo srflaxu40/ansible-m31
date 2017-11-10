@@ -65,7 +65,7 @@
       Organizational Unit Name:
         - "Company"
       Common Name:
-        - "Prominent Edge CA"
+        - "Prominent Edge Cert"
       Name \[server\]:
         - "Server"
       Email Address:
@@ -84,7 +84,7 @@
   template: src=diffie-hellman.j2 dest=/home/{{ ansible_ssh_user }}//openvpn-ca/diffie_hellman_keys.sh mode=0755
             owner={{ ansible_user }}
 
-- name: Generate server cert and keypair
+- name: Generate Diffie-Hellman Keys
   expect:
     command: bash /home/{{ ansible_ssh_user }}/openvpn-ca/diffie_hellman_keys.sh
     chdir: /home/{{ ansible_ssh_user }}/openvpn-ca/
@@ -97,10 +97,35 @@
   copy: src=generate_cert_and_kp.sh dest=/home/{{ ansible_ssh_user }}//openvpn-ca/generate_cert_and_kp.sh mode=0755
             owner={{ ansible_user }}
 
-- name: Generate server cert and keypair
-  shell: /home/{{ ansible_ssh_user }}/openvpn-ca/generate_cert_and_kp.sh
-  args:
+- name: Generate Client cert and KP
+  expect:
+    command: bash /home/{{ ansible_ssh_user }}/openvpn-ca/generate_cert_and_kp.sh
     chdir: /home/{{ ansible_ssh_user }}/openvpn-ca/
+    responses:
+      Country Name:
+        - "{{ org_country }}"
+      State or Province Name:
+        - "{{ org_province }}"
+      Locality Name:
+        - "{{ org_location }}" 
+      Organization Name:
+        - "{{ org_name }}"
+      Organizational Unit Name:
+        - "Company"
+      Common Name:
+        - "Prominent Edge CA"
+      Name \[server\]:
+        - "Server"
+      Email Address:
+        - "dummyemail@acme.com"
+      A challenge password:
+        - ""
+      Sign the certificate\? \[y\/n\]:
+        - "y"
+      requests certified, commit:
+        - "y"
+      An optional company name:
+        - ""
 
 - name: Copy over server configuration
   copy: src=server.conf dest=/etc/openvpn/server.conf mode=0644 owner=root group=root
@@ -136,7 +161,7 @@
     mode: 0700
 
 - name: get public IP
-  ipify_facts:
+  shell: curl http://169.254.169.254/latest/meta-data/public-ipv4
   register: public_ip
 
 - name: Copy over base configuration`
@@ -144,22 +169,27 @@
             owner={{ ansible_user }}
 
 - name: Copy Over configuration script
-  copy: src=make_config.sh dest=/home/{{ ansible_ssh_user }}/client-configs/make_config.sh  mode=0755 owner=root group=root
+  template: src=make_config.sh.j2 dest=/home/{{ ansible_ssh_user }}/client-configs/make_config.sh  mode=0755 owner={{ ansible_ssh_user }}
 
 - name: Ensure ownership for downstream profile creations
   file:
+    recurse: yes
     path: /home/{{ ansible_ssh_user }}/client-configs
     owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
     mode: 0755
 
 - name: Ensure ownership for downstream profile creations
   file:
+    recurse: yes
     path: /home/{{ ansible_ssh_user }}/openvpn-ca
     owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
     mode: 0755
 
 - name: Create client configs
   shell: /home/{{ ansible_ssh_user }}/client-configs/make_config.sh client1
-  become: true
+  become: yes
   args:
     chdir: /home/{{ ansible_ssh_user }}/client-configs/
+

@@ -45,7 +45,19 @@ eval "$(pyenv virtualenv-init -)"
 
 * You should now be in the ansible project with your pip modules installed.
 
-## Testing your roles with ansible-kitchen
+## Roles:
+
+* openvpn - This requires running the openvpn.sh script _after_ setting your vars in `ansible_env`.
+  - Please note that this spins up an ec2 instance first, and then provisions it with the openvpn play/role.
+  - The reason for this is to avoid any weirdness having to get new IPs alongside packer, etc, when an instance
+    exists behind a launch config; openvpn configurations for clients / server require static IPs.
+  - Please set your AWS keys in your credentials keychain as noted above in Development Setup.
+
+* kubernetes - This is meant to be run with packer.  Packer templates are under the `./packer` directory.
+
+---
+
+## Testing your roles with ansible-kitchen (in alpha)`
 
 * Update the `ansible_env` file to your respective environment variables for your AWS account before attempting test kitchen.
   Don't forget to source it:

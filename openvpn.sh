@@ -7,11 +7,11 @@ source ansible_env
 export TAG_NAME=openvpn
 export TAG_ENV=development
 
-#ansible-playbook -i ./hosts ec2.yml -vvvvv -u ubuntu --tags "configure,deploy"
+ansible-playbook -i ./hosts ec2.yml -vvvvv -u ubuntu --tags "configure,deploy"
 
 echo "Waiting for server to boot up in order to ssh..."
 
-#sleep 30
+sleep 30
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 

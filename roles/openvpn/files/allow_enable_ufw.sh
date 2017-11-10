@@ -4,5 +4,5 @@ ufw allow 443
 ufw allow OpenSSH
 
 ufw disable
-ufw enable
+ufw --force enable
 

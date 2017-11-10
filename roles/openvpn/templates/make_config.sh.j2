@@ -2,9 +2,9 @@
 
 # First argument: Client identifier
 
-KEY_DIR=~/openvpn-ca/keys
-OUTPUT_DIR=~/client-configs/files
-BASE_CONFIG=~/client-configs/base.conf
+KEY_DIR=/home/{{ ansible_ssh_user }}/openvpn-ca/keys
+OUTPUT_DIR=/home/{{ ansible_ssh_user }}/client-configs/files
+BASE_CONFIG=/home/{{ ansible_ssh_user }}/client-configs/base.conf
 
 cat ${BASE_CONFIG} \
     <(echo -e '<ca>') \

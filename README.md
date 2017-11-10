@@ -84,7 +84,7 @@ scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@10.1.2.212:~/client-configs/fi
 
 ---
 
-## Testing your roles with ansible-kitchen (in alpha)`
+## Testing your roles with ansible-kitchen (in alpha)
 
 * Update the `ansible_env` file to your respective environment variables for your AWS account before attempting test kitchen.
   Don't forget to source it:

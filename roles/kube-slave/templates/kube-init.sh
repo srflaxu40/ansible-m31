@@ -7,12 +7,12 @@ rm -rf /etc/kubernetes/
 systemctl stop kubelet | true
 
 # pull down non-expiring join token for join command below.
-aws s3 cp s3://{{s3_bucket_name}}/kubernetes-join-{{kubernetes_environment}}.txt .
-export KUBEADM_JOIN_TOKEN=`cat kubernetes-join-{{kubernetes_environment}}.txt`
+aws s3 cp s3://{{s3_bucket_name}}/kubernetes-join-{{tag_name}}-{{kubernetes_environment}}.txt .
+export KUBEADM_JOIN_TOKEN=`cat kubernetes-join-{{tag_name}}-{{kubernetes_environment}}.txt`
 
 # Pull down sha256 hash from s3 for kubeadm join command below
-aws s3 cp s3://{{s3_bucket_name}}/kube-forever-token-{{kubernetes_environment}}.txt .
-export KUBEADM_SHA256_TOKEN=`cat kube-forever-token-{{kubernetes_environment}}.txt`
+aws s3 cp s3://{{s3_bucket_name}}/kube-forever-token-{{tag_name}}-{{kubernetes_environment}}.txt .
+export KUBEADM_SHA256_TOKEN=`cat kube-forever-token-{{tag_name}}-{{kubernetes_environment}}.txt`
 
 # Join this node based on submitted token and sha
 kubeadm join \

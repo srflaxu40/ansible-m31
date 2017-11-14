@@ -62,4 +62,28 @@
       - "kubeadm={{kubeadm_version}}"
       - kubectl
 
+- name: Drop in kubelet configuration for kubelet service
+  copy:
+    src: 10-kubeadm.conf
+    dest: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    mode: 0755 
+    owner: root
+    group: root
+
+- name: Restart kubelet
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: kubelet
+
+- name: Move over kubeadm init script
+  template:
+    src: kube-init.sh
+    dest: /usr/local/bin/kube-init.sh
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Init Master
+  shell: /usr/local/bin/kube-init.sh
 

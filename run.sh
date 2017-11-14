@@ -1,13 +1,18 @@
 #!/bin/bash
-
-# PRIVATE KEY = $1
+# Author - John Knepper
+# Notes  - Simple driver to spin up various playbooks on EC2.
+# Keep in mind that you can override any variables using the ansible CLI flag --extra-vars.
+# PRIVATE KEY = PEM root key that exists in AWS IAM, and you wish to provision as the instance's
+# root key.
 # ROLE = (openvpn|kube-master|etc)
 # TAG_NAME = (openvpn|kube-master|whatever)
+# SKIP (bool) = true or false. If true, will not spin up a new EC2 instance and will provision it 
+# with the play book specified as ROLE.
 
 if [  "$#" -ne 3 ]; then
 echo <<EOF
 USAGE:
-  ./run.sh <private key> <role (ex. openvpn or kube-master)> <tag name (ex openvpn or kube-master)>
+  ./run.sh <private key> <role (ex. openvpn or kube-master)> <tag name (ex openvpn or kube-master)> <true|false>
 EOF
 
 fi
@@ -18,13 +23,17 @@ source ansible_env
 
 export ROLE=$2
 export TAG_NAME=$3
-export TAG_ENV=development
+export TAG_ENV=${ENVIRONMENT}
+export SKIP=$4
 
-ansible-playbook -i ./hosts ec2.yml -vvvvv -u ubuntu --tags "configure,deploy"
+if [ "$SKIP" == "true" ]; then
+    ansible-playbook -i ./hosts ec2.yml -vvvvv -u ubuntu --tags "configure,deploy"
 
-echo "Waiting for server to boot up in order to ssh..."
+    echo "Waiting for server to boot up in order to ssh..."
 
-sleep 30
+    sleep 30
+
+fi
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 

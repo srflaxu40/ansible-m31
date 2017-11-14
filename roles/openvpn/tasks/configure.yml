@@ -133,6 +133,10 @@
 - name: Allow server to route traffic
   copy: src=sysctl.conf dest=/etc/sysctl.conf mode=0644 owner=root group=root
 
+- name: Make it so
+  shell: sysctl -p
+  become: yes
+
 - name: Setup ufw firewall rules
   copy: src=before.rules dest=/etc/ufw/before.rules mode=0644 owner=root group=root
 

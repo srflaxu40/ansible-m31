@@ -7,3 +7,4 @@ kubeadm_version: "1.8.2-00"
 kubernetes_pod_cidr: "192.168.0.0/16"
 kubernetes_environment: "{{ lookup('env','ENVIRONMENT') }}"
 s3_bucket_name: "{{ lookup('env','S3_BUCKET_NAME') }}"
+

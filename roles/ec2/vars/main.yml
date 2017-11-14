@@ -10,6 +10,6 @@ tag_name: "{{ lookup('env','TAG_NAME') }}"
 tag_environment: "{{ lookup('env','TAG_ENV') }}"
 count: 1
 region: "us-east-1"
-iam_role: "role-deploy"
+iam_role: "{{ lookup('env','IAM_ROLE') }}"
 storage: "8"
 

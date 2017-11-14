@@ -10,6 +10,9 @@ kubeadm reset | true
 JOIN_CMD=`kubeadm init --pod-network-cidr={{kubernetes_pod_cidr}} | grep "kubeadm join" | sed 's/^ *//g'`
 echo ${JOIN_CMD} > /tmp/kubey-join-cmd.txt
 
+# copy to s3 for internal use
+aws s3 cp /tmp/kubey-join-cmd.txt  s3://{{ s3_bucket_name }}/kubernetes-join-{{kubernetes_environment}}.txt
+
 mkdir -p $HOME/.kube
 cp /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
@@ -20,8 +23,14 @@ KUBE_JOIN_TOKEN=`kubeadm token create --groups system:bootstrappers:kubeadm:defa
 
 echo "Non-expiring join token: $KUBE_JOIN_TOKEN" > /tmp/kube-forever-token
 
+# Copy to s3 for internal use
+aws s3 cp /tmp/kube-forever-token s3://{{ s3_bucket_name }}/kube-forever-token-{{kubernetes_environment}}.txt
+
+# Clean up so we can re-create below
+kubectl delete configmap kube-admin-{{kubernetes_environment}} | true
+
 kubectl create configmap \
         kube-admin-{{kubernetes_environment}} \
-        --from-file=/etc/kubernetes/admin.conf
+        --from-file=/etc/kubernetes/admin.conf | true
 
 

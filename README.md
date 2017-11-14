@@ -68,16 +68,31 @@ eval "$(pyenv virtualenv-init -)"
 USAGE:
   ./run.sh $PRIVATE_KEY_PATH $ROLE $TAG_NAME $BOOL
  
-  $PRIVATE_KEY_PATH - the path to your priave key PEM file downloades when you created an IAM key in AWS.
-  $ROLE - the role (play) you wish to run; under ./roles/
-  $TAG_NAME - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
+  $PRIVATE_KEY_PATH - the path to your private key PEM file downloades when you created an IAM key in AWS.
+  $ROLE             - the role (play) you wish to run; under ./roles/
+  $TAG_NAME         - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
     variable set in the ansible_env file.
-  $BOOL - true or false.  Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
+  $BOOL             - true or false.  Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
 
 EXAMPLE:
   ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
   
   This will create a brand new EC2 instance of type specified in ansible_env, and tagged kube-master-development with the root key named production-vpc-us-east-1 in AWS IAM, and provisioned with the kube-master.yml playbook specified with $ROLE.
+```
+* Please note that specifying *false* as the BOOL argument expects that an instance exists with the tag name and environment variable (inside ansible_env).  This then provisions that instance with the plays designated by ROLE.
+* Here is an example of how ansible uses the tag name and environment along with dynamic inventory to provision the instance:
+```
+---
+# file: packer/kube.yml
+- name: Configure and deploy kube node
+  hosts: tag_Name_{{ tag_name }}_{{ tag_environment }}
+  remote_user: ubuntu
+  become: yes 
+  gather_facts: False
+  roles:
+    - python
+    - hosts
+    - kube-master
 ```
 
 ## OpenVPN:

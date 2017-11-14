@@ -11,7 +11,6 @@ Test your code on-the-fly with ansible-kitchen, and docker for mac.
 * This repo expects that you have installed [Docker for Mac](https://docs.docker.com/docker-for-mac/install/).
 * Please also setup your [aws configuration](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
-
 ## rbenv instructions (v2.3.2)
 * Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby to v2.3.2.v
 ```
@@ -85,7 +84,8 @@ scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openv
 
 * Packer templates are under the `./packer` directory.
   - This play is used in conjunction with packer to create a kube master via `kubeadm init`, and join slaves via `kubeadm join`.
-* Init tokens for can be found on the kube-master instance you provision in the `/etc/kubernetes/admin.conf` file.
+* Init tokens for can be found on the kube-master instance you provision in the `/tmp/kubey-join` file that is created.  This file has the base command that is needed by slaves to join.
+* For [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) users, the cluster configuraton can be found in the `/etc/kubernetes/admin.conf` file.
 * The discovery token `--discovery-token-ca-cert-hash` used in the slave kubeadm join command (see *kube-slave* playbook) can be created by running the following on your kubernetes master node:
 ```
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'

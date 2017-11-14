@@ -63,10 +63,18 @@ eval "$(pyenv virtualenv-init -)"
   - Please set your AWS keys in your credentials keychain as noted above in Development Setup.
   - Also, please update `ansible_env` to values specific to your VPC, Subnet (must be public for a VPN), Security Groups,
     IAM Role, etc...  The example values in the `ansible_env` will not work for you.
-  - USAGE:
 ```
-./run.sh <path to your key for this server> <role (ex. - openvpn or kube-master)> <tag name (ex. - openvpn or kube-master)
-
+ 14 USAGE:
+ 15   ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
+ 16  
+ 17   \$PRIVATE_KEY_PATH - the path to your priave key PEM file downloades when you created an IAM key in AWS.
+ 18   \$ROLE - the role (play) you wish to run; under ./roles/
+ 19   \$TAG_NAME - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
+ 20     variable set in the ansible_env file.
+ 21   \$BOOL - Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
+ 22 
+ 23 EXAMPLE:
+ 24   ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
 ```
 
 ## OpenVPN:
@@ -79,7 +87,7 @@ scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openv
 * This stands up a kubernetes master instance utilizing kubeadm.
 * This is meant to be run with packer, but can be run using `run.sh` as the above example:
 ```
-./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test
+./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
 ```
 
 * Packer templates are under the `./packer` directory.

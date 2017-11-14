@@ -71,12 +71,12 @@ USAGE:
   $ROLE - the role (play) you wish to run; under ./roles/
   $TAG_NAME - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
     variable set in the ansible_env file.
-  $BOOL - Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
+  $BOOL - true or false.  Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
 
 EXAMPLE:
   ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
   
-  This will create a brand new EC2 instance of type specified in ansible_env, and tagged kube-master-development with the root   key named production-vpc-us-east-1 in AWS IAM.
+  This will create a brand new EC2 instance of type specified in ansible_env, and tagged kube-master-development with the root key named production-vpc-us-east-1 in AWS IAM, and provisioned with the kube-master.yml playbook specified with $ROLE.
 ```
 
 ## OpenVPN:

@@ -47,7 +47,7 @@ eval "$(pyenv virtualenv-init -)"
 ## Roles:
 
 * No network arch. (VPCs, subnets, etc) are created by these playbooks.  These playbooks expect you have a VPC created with existing subnets.  In order for certain roles to work (like openvpn), you must have a public subnet connected to your internet gateway (IGW) via a route table.  This is necessary for instances created by the ec2.yml playbook that require a public subnet.
-* The _*ansible_env*_ file sets environment variables that are required to be changed.  Others that exist, but do not have to be changed (defaults) are inside the standard vars directory for a role `roles/<role name>/vars/main.yml`.
+* The _*ansible_env*_ file sets environment variables that are required to be changed; this is super important for you to customize to your own values.  Others that exist, but do not have to be changed (defaults) are inside the standard vars directory for a role `roles/<role name>/vars/main.yml`.
   - These vars can also be overridden on the command line or inside the run.sh script by adding the `--extra-args` argument.
   has a route table that connects it to your VPC's internet gateway.
 * Important - this has only been tested on the base Ubuntu AMI for 16.04 in us-east-1 (ami-cd0f5cb6).  Running it on
@@ -108,10 +108,14 @@ scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openv
 ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
 ```
 
-* Packer templates are under the `./packer` directory.
-  - This play is used in conjunction with packer to create a kube master via `kubeadm init`, and join slaves via `kubeadm join`.
-* Init tokens for can be found on the kube-master instance you provision in the `/tmp/kubey-join` file that is created.  This file has the base command that is needed by slaves to join.
+* This play is used in conjunction with packer to create a kube master via `kubeadm init`, and join slaves via `kubeadm join`.
+* Join commands for kubeadm can be found on the kube-master instance you provision in the */tmp/kubey-join-cmd* file that is created.  This file has the base command that is needed by slaves to join, however, the default init token should provided not be used...
+* _Note_ - the following requires you have the root ssh key you provisioned the instance with in the `./run.sh` script.
+  - In the kube-master.yml playbook's kube-init.sh a non-expiring token is created [here](https://github.com/srflaxu40/ansible-m31/blob/master/roles/kube-master/templates/kube-init.sh#L14).  *This* is the token that should be used in the join command for slaves, and passed to the _kube-slave.yml_ playbook as a parameter in ansible_env.
+    - This can be found in the file  */tmp/kube-forever-token*.
 * For [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) users, the cluster configuraton can be found in the `/etc/kubernetes/admin.conf` file.
+  - This is also set to a configmap in the kube-master playbook.  You can get it by:
+    `kubectl get configmaps kube-admin-<environment>`
 * The discovery token `--discovery-token-ca-cert-hash` used in the slave kubeadm join command (see *kube-slave* playbook) can be created by running the following on your kubernetes master node:
 ```
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'

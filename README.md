@@ -46,10 +46,13 @@ eval "$(pyenv virtualenv-init -)"
 
 ## Roles:
 
-* No network arch. (VPCs, subnets, etc) are created by these playbooks.  These playbooks expect you have a VPC created with existing subnets.  In order for certain roles to work (like openvpn), you must have a public subnet connected to your internet gateway (IGW) via a route table.  This is necessary for instances created by the ec2.yml playbook that require a public subnet.
+* No network arch. (VPCs, subnets, etc) are created by these playbooks.  These playbooks expect you have a VPC created with existing subnets.  In order for certain roles to work (like openvpn), you must have a public subnet connected to your internet gateway (IGW) via a route table.  This is necessary for instances created by the ec2.yml playbook that require a public subnet; a public subnet infers instances will have public IPs and direct access to your VPC's Internet Gateway (IGW).
+
+### Really Important (ansible_env):
 * The _*ansible_env*_ file sets environment variables that are required to be changed; this is super important for you to customize to your own values.  Others that exist, but do not have to be changed (defaults) are inside the standard vars directory for a role `roles/<role name>/vars/main.yml`.
   - These vars can also be overridden on the command line or inside the run.sh script by adding the `--extra-args` argument.
-  has a route table that connects it to your VPC's internet gateway.
+  - The s3 bucket you specify in this file for `S3_BUCKET_NAME` should have proper access policies restricting only to users that are authenticated in your AWS account.  Although users cannot interact with your kubernetes cluster without a VPN anyway.
+  - Also, ensure your instances are spun up with proper IAM access to s3.  The Kubernetes playbooks utilize S3 to access generated configuration the the kube-master.yml playbook creates.  It also requires the ability to provision new instances in EC2.  Note that this is set in ansible_env via the `IAM_ROLE` environment variable.
 * Important - this has only been tested on the base Ubuntu AMI for 16.04 in us-east-1 (ami-cd0f5cb6).  Running it on
   other AMIs may require modifications / forking this repository.
 * This supports only the AWS cloud.

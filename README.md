@@ -47,10 +47,8 @@ eval "$(pyenv virtualenv-init -)"
 
 ## Roles:
 
-## OpenVPN
-
-* This does not create your VPC for you.
-* This does not create any subnets, but it assumes the subnet you specify in `ansible_env` prior to source'ing it
+* These does not create your VPC for you.
+* These does not create any subnets, but it assumes the subnet you specify in `ansible_env` prior to source'ing it
   has a route table that connects it to your VPC's internet gateway.
 * Important - this has only been tested on the base Ubuntu AMI for 16.04 in us-east-1 (ami-cd0f5cb6).  Running it on
   other AMIs may require modifications / forking this repository.
@@ -61,26 +59,40 @@ eval "$(pyenv virtualenv-init -)"
 * Example Security Group that gives access to 443 for VPN access, ssh access to the VPN, and also allows traffic to it from an internal security group:
 ![Alt text](/images/vpn_sg.png?raw=true "Example VPN Security Group.")
 
-* openvpn - This requires running the openvpn.sh script _after_ setting your vars in `ansible_env`.
-  - Please note that this spins up an ec2 instance first, and then provisions it with the openvpn play/role.
-  - The reason for this is to avoid any weirdness having to get new IPs alongside packer, etc, when an instance
-    exists behind a launch config; openvpn configurations for clients / server require static IPs.
+* `run.sh` - This is meant to be run _after_ setting your vars in `ansible_env`.
+  - Please note that this spins up an ec2 instance first, and then provisions it with the playbook specified in the CML.
   - Please set your AWS keys in your credentials keychain as noted above in Development Setup.
   - Also, please update `ansible_env` to values specific to your VPC, Subnet (must be public for a VPN), Security Groups,
-    IAM Role, etc...
+    IAM Role, etc...  The example values in the `ansible_env` will not work for you.
   - USAGE:
 ```
-./openvpn.sh <path to your key for this server>
+./run.sh <path to your key for this server> <role (ex. - openvpn or kube-master)> <tag name (ex. - openvpn or kube-master)
 
 ```
 
-* Afterward, copy your client1.ovpn file to your local box and download [tunnelblik](https://tunnelblick.net/downloads.html)
+## OpenVPN:
+* After provisioning with openvpn, do not forget to copy your client1.ovpn file to your local box and download [tunnelblik](https://tunnelblick.net/downloads.html)
 ```
-scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@10.1.2.212:~/client-configs/files/client1.ovpn .
+scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openvpn server>:~/client-configs/files/client1.ovpn .
 ```
 
-* kubernetes - This is meant to be run with packer.  Packer templates are under the `./packer` directory.
+## kube-master:
+* This stands up a kubernetes master instance utilizing kubeadm.
+* This is meant to be run with packer, but can be run using `run.sh` as the above example:
+```
+./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test
+```
+
+* Packer templates are under the `./packer` directory.
   - This play is used in conjunction with packer to create a kube master via `kubeadm init`, and join slaves via `kubeadm join`.
+* Init tokens for can be found on the kube-master instance you provision in the `/etc/kubernetes/admin.conf` file.
+* The discovery token `--discovery-token-ca-cert-hash` used in the slave kubeadm join command (see *kube-slave* playbook) can be created by running the following on your kubernetes master node:
+```
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+```
+
+## kube-slave:
+* See *kube-master* above for instructions on populating the init token / discovery token ca cert hash.
 
 ---
 

@@ -64,17 +64,17 @@ eval "$(pyenv virtualenv-init -)"
   - Also, please update `ansible_env` to values specific to your VPC, Subnet (must be public for a VPN), Security Groups,
     IAM Role, etc...  The example values in the `ansible_env` will not work for you.
 ```
- 14 USAGE:
- 15   ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
- 16  
- 17   \$PRIVATE_KEY_PATH - the path to your priave key PEM file downloades when you created an IAM key in AWS.
- 18   \$ROLE - the role (play) you wish to run; under ./roles/
- 19   \$TAG_NAME - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
- 20     variable set in the ansible_env file.
- 21   \$BOOL - Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
- 22 
- 23 EXAMPLE:
- 24   ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
+USAGE:
+  ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
+ 
+  \$PRIVATE_KEY_PATH - the path to your priave key PEM file downloades when you created an IAM key in AWS.
+  \$ROLE - the role (play) you wish to run; under ./roles/
+  \$TAG_NAME - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
+    variable set in the ansible_env file.
+  \$BOOL - Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
+
+EXAMPLE:
+  ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
 ```
 
 ## OpenVPN:

@@ -12,6 +12,7 @@
 if [  "$#" -ne 4 ]; then
 echo <<EOF
 USAGE:
+
   ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
  
   \$PRIVATE_KEY_PATH - the path to your priave key PEM file downloades when you created an IAM key in AWS.
@@ -21,6 +22,7 @@ USAGE:
   \$BOOL - Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
 
 EXAMPLE:
+
   ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
    
 EOF

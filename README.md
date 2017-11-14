@@ -69,6 +69,7 @@ eval "$(pyenv virtualenv-init -)"
     IAM Role, etc...  The example values in the `ansible_env` will not work for you.
 ```
 USAGE:
+
   ./run.sh $PRIVATE_KEY_PATH $ROLE $TAG_NAME $BOOL
  
   $PRIVATE_KEY_PATH - the path to your private key PEM file downloades when you created an IAM key in AWS.
@@ -78,6 +79,7 @@ USAGE:
   $BOOL             - true or false.  Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
 
 EXAMPLE:
+
   ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
   
   This will create a brand new EC2 instance of type specified in ansible_env, and tagged kube-master-development with the root key named production-vpc-us-east-1 in AWS IAM, and provisioned with the kube-master.yml playbook specified with $ROLE.
@@ -114,10 +116,10 @@ scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openv
 * This play is used in conjunction with packer to create a kube master via `kubeadm init`, and join slaves via `kubeadm join`.
 * Join commands for kubeadm can be found on the kube-master instance you provision in the */tmp/kubey-join-cmd* file that is created.  This file has the base command that is needed by slaves to join, however, the default init token should provided not be used...
 * _Note_ - the following requires you have the root ssh key you provisioned the instance with in the `./run.sh` script.
-  - In the kube-master.yml playbook's kube-init.sh a non-expiring token is created [here](https://github.com/srflaxu40/ansible-m31/blob/master/roles/kube-master/templates/kube-init.sh#L14).  *This* is the token that should be used in the join command for slaves, and passed to the _kube-slave.yml_ playbook as a parameter in ansible_env.
+  - In the kube-master.yml playbook's kube-init.sh a non-expiring token is created [here](https://github.com/srflaxu40/ansible-m31/blob/master/roles/kube-master/templates/kube-init.sh#L14).  *This* is the token that should be used in the join command for slaves.
     - This can be found in the file  */tmp/kube-forever-token*.
 * For [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) users, the cluster configuraton can be found in the `/etc/kubernetes/admin.conf` file.
-  - This is also set to a configmap in the kube-master playbook.  You can get it by:
+  - This is also set to a configmap in the kube-master playbook that is set when the task runs.  You can get it by:
     `kubectl get configmaps kube-admin-<environment>`
 * The discovery token `--discovery-token-ca-cert-hash` used in the slave kubeadm join command (see *kube-slave* playbook) can be created by running the following on your kubernetes master node:
 ```

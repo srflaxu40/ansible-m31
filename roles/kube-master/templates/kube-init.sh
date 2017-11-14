@@ -11,6 +11,7 @@ JOIN_CMD=`kubeadm init --pod-network-cidr={{kubernetes_pod_cidr}} | grep "kubead
 echo ${JOIN_CMD} > /tmp/kubey-join-cmd.txt
 
 # copy to s3 for internal use
+aws s3 rm s3://{{ s3_bucket_name }}/kubernetes-join-{{tag_name}}-{{kubernetes_environment}}.txt | true
 aws s3 cp /tmp/kubey-join-cmd.txt  s3://{{ s3_bucket_name }}/kubernetes-join-{{tag_name}}-{{kubernetes_environment}}.txt
 
 mkdir -p $HOME/.kube
@@ -24,6 +25,7 @@ KUBE_JOIN_TOKEN=`kubeadm token create --groups system:bootstrappers:kubeadm:defa
 echo "Non-expiring join token: $KUBE_JOIN_TOKEN" > /tmp/kube-forever-token
 
 # Copy to s3 for internal use
+aws s3 rm s3://{{ s3_bucket_name }}/kube-forever-token-{{tag_name}}-{{kubernetes_environment}}.txt | true
 aws s3 cp /tmp/kube-forever-token s3://{{ s3_bucket_name }}/kube-forever-token-{{tag_name}}-{{kubernetes_environment}}.txt
 
 # Clean up so we can re-create below

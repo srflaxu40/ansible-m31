@@ -1,0 +1,6 @@
+
+ubuntu_os_name: "xenial"
+ubuntu_os_version: "16.04"
+os_user: "ubuntu"
+docker_version: "17.03.1~ce-0~ubuntu-xenial"
+kubeadm_version: "1.8.2-00"

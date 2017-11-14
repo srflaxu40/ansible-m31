@@ -1,0 +1,65 @@
+# Task - master
+# Configures and deploys kubernetes master
+
+- name: Add an Apt signing key to a specific keyring file
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add apt repository for docker
+  apt_repository:
+    repo:  "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ubuntu_os_name}} stable"
+    state: present
+    update_cache: yes
+    filename: 'docker.list'
+
+- name: Install APT Packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+      - awscli
+      - jq
+      - "docker-ce={{ docker_version }}"
+      - apt-transport-https
+
+- name: Update daemon to use systemd
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    mode: 0755 
+    owner: root
+    group: root
+
+- name: Restart Docker to Ensure Changes take effect
+  systemd:
+    name: docker
+    state: restarted
+
+- name: Add '{{os_user}}'` to docker group
+  user: name='{{os_user}}'
+        groups=docker
+        append=yes
+
+- name: Add Google Cloud gpg key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add repo to sources lists
+  apt_repository:
+    repo: "deb http://apt.kubernetes.io/ kubernetes-{{ubuntu_os_name}} main"
+    state: present
+    update_cache: yes
+    filename: 'kubernetes.list'
+
+- name: Install kubernetes packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+      - kubelet
+      - "kubeadm={{kubeadm_version}}"
+      - kubectl
+
+

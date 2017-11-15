@@ -45,7 +45,7 @@ if [ "$SKIP" == "true" ]; then
 
     echo "Waiting for server to boot up in order to ssh..."
 
-    sleep 30
+    sleep 60
 
 fi
 

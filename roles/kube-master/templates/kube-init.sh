@@ -22,11 +22,15 @@ kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f https://docs.projectcal
 
 KUBE_JOIN_TOKEN=`kubeadm token create --groups system:bootstrappers:kubeadm:default-node-token --ttl 0`
 
-echo "Non-expiring join token: $KUBE_JOIN_TOKEN" > /tmp/kube-forever-token
+echo $KUBE_JOIN_TOKEN > /tmp/kube-forever-token
 
 # Copy to s3 for internal use
 aws s3 rm s3://{{ s3_bucket_name }}/kube-forever-token-{{tag_name}}-{{kubernetes_environment}}.txt | true
 aws s3 cp /tmp/kube-forever-token s3://{{ s3_bucket_name }}/kube-forever-token-{{tag_name}}-{{kubernetes_environment}}.txt
+
+export SHA256_TOKEN=`openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'`
+echo $SHA256_TOKEN > /tmp/kube-sha256-token-{{tag_name}}-{{kubernetes_environment}}.txt
+aws s3 cp /tmp/kube-sha256-token-{{tag_name}}-{{kubernetes_environment}}.txt s3://{{ s3_bucket_name }}/kube-sha256-token-{{tag_name}}-{{kubernetes_environment}}.txt 
 
 # Clean up so we can re-create below
 kubectl delete configmap kube-admin-{{kubernetes_environment}} | true

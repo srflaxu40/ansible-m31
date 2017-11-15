@@ -49,7 +49,18 @@ export ENVIRONMENT=development
 # kubectl.
 export S3_BUCKET_NAME="statengine-devops"
 
-export KUBE_MASTER_IP=10.1.7.195
+# You have to change this (must change) once you run the kube-master as a new
+# instance is created.
+export KUBE_MASTER_IP=10.1.7.245
+
+# Remember for ansible to substitute hyphens for underscores.
+# This is only temporary until we figure out a better way to toss along things
+# The reason we sub hyphens for underscores is that inside run.sh we have:
+#
+#  54 export SED_NAME=`echo $TAG_NAME | sed 's/-/_/g'`
+#  55 export SED_ENV=`echo $TAG_ENV | sed 's/-/_/g'`
+#
+export KUBE_MASTER_TAG="kube_master_test"
 
 # These are important parameters for the kubernetes slave (kube-slave.yml) playbook.  Without these
 # kubeadm join will fail to join the master.  These are also copied to your s3 bucket specified

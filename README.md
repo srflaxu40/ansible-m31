@@ -128,6 +128,17 @@ openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outfor
 
 ## kube-slave:
 * See *kube-master* above for instructions on populating the init token / discovery token ca cert hash.
+* The variables you need to set in `ansible_env` are:
+```
+S3_BUCKET_NAME
+KUBE_MASTER_IP
+KUBE_MASTER_TAG
+ENVIRONMENT
+```
+  - Note that KUBE_MASTER_IP comes directly from the private IP of the instance you provisioned for kube-master.
+  - KUBE_MASTER_TAG is the prettified tag name in ansible format (hyphens are changed to underscores); kube-master in the kube-master playbook becomes *kube_master* in the kube-slave playbook.  This is because ansible does not support hyphens in the tag names / environment.
+  - ENVIRONMENT is arbitrary but required to tag the instances.
+* Using the above information, the kube-slave playbook provisions instances and joins them to the kube master based on KUBE_MASTER_IP.  Tokens are taken from S3, which is why the KUBE_MASTER_TAG name is required as it is to arbitrary per user.
 
 ---
 

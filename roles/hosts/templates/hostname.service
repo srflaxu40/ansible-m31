@@ -1,0 +1,10 @@
+[Unit]
+Description=Change Hostname On Bootup
+After=syslog.target network.target
+Conflicts=sendmail.service exim.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /tmp/change_hostname.sh
+RemainAfterExit=true
+

@@ -10,3 +10,14 @@
     executable: /bin/bash
   become: yes 
 
+- name: Change hostname everytime server boots
+  template: src=hostname.service dest=/etc/systemd/system/ mode=0755
+            owner={{ ansible_user }}
+  become: yes
+
+- name: enable hostname service
+  systemd:
+    name: hostname
+    state: started
+    enabled: yes
+    masked: no

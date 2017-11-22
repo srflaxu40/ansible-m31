@@ -29,6 +29,8 @@ eval "$(pyenv virtualenv-init -)"
 
 * You should now be in the ansible project with your pip modules installed.
 
+* *alternative* - just install awscli, and ansible with pip.
+
 ## Roles:
 
 * No network arch. (VPCs, subnets, etc) are created by these playbooks.  These playbooks expect you have a VPC created with existing subnets.  In order for certain roles to work (like openvpn), you must have a public subnet connected to your internet gateway (IGW) via a route table.  This is necessary for instances created by the ec2.yml playbook that require a public subnet; a public subnet infers instances will have public IPs and direct access to your VPC's Internet Gateway (IGW).

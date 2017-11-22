@@ -131,9 +131,7 @@ ENVIRONMENT
 
 ## Testing your roles with ansible-kitchen (in alpha)
 
-## kitchen setup
-
-###(skip if you don't care for kitchen) rbenv instructions (v2.3.2) -
+### kitchen setup - (skip if you don't care for kitchen) rbenv instructions (v2.3.2) -
 * Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby to v2.3.2.v
 ```
 brew install rbenv

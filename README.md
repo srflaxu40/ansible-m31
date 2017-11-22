@@ -11,21 +11,6 @@ Test your code on-the-fly with ansible-kitchen, and docker for mac.
 * This repo expects that you have installed [Docker for Mac](https://docs.docker.com/docker-for-mac/install/).
 * Please also setup your [aws configuration](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
-## rbenv instructions (v2.3.2)
-* Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby to v2.3.2.v
-```
-brew install rbenv
-rbenv init; # Paste output into your ~/.bash_profile
-rbenv install 2.3.2
-```
-
-* Now install your gems
-```
-rbenv exec gem install bundler
-rbenv exec bundle install
-rbenv exec kitchen -h
-```
-
 ## Setting up your local virtualenv
 1. Install [PyEnv](https://github.com/pyenv/pyenv#homebrew-on-mac-os-x)
    - Now install python v2.7.10
@@ -143,6 +128,23 @@ ENVIRONMENT
 ---
 
 ## Testing your roles with ansible-kitchen (in alpha)
+
+## kitchen setup
+
+###(skip if you don't care for kitchen) rbenv instructions (v2.3.2) -
+* Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby to v2.3.2.v
+```
+brew install rbenv
+rbenv init; # Paste output into your ~/.bash_profile
+rbenv install 2.3.2
+```
+
+* Now install your gems
+```
+rbenv exec gem install bundler
+rbenv exec bundle install
+rbenv exec kitchen -h
+```
 
 * Update the `ansible_env` file to your respective environment variables for your AWS account before attempting test kitchen.
   Don't forget to source it:

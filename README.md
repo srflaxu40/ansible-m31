@@ -27,7 +27,11 @@ eval "$(pyenv virtualenv-init -)"
 3. Activate project
   - `pyenv activate ansible`
 
-* You should now be in the ansible project with your pip modules installed.
+* You should now be in the ansible project.  Install your pip modules:
+```
+pip install boto
+pip install ansible
+```
 
 * *alternative* - just install awscli, and ansible with pip.
 

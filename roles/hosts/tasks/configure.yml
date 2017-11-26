@@ -21,3 +21,11 @@
     state: started
     enabled: yes
     masked: no
+
+- name: Update ulimits
+  pam_limits:
+    domain: 'root'
+    limit_type: '-'
+    limit_item: nofile
+    value: 64000
+  become: yes

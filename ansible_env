@@ -11,10 +11,15 @@
 export SG_ID=sg-04cd9876
 
 # The subnet of your instance (public)
+# For use with openvpn
 export SUBNET_ID=subnet-9639d1b9
 
+# Private subnet
+# For use with instances that do not require public access.
+export PRIVATE_SUBNET_ID=subnet-90093b9c
+
 # server instance will be tagged TAG_NAME-TAG_ENV
-export TAG_NAME=openvpn
+export TAG_NAME=kube_master
 export TAG_ENV=development
 
 # ubuntu 16
@@ -28,6 +33,11 @@ export SSH_KEY=~/.ssh/production-vpc-us-east-1.pem
 
 # The name of th aforementioned key in AWS
 export SSH_KEY=production-vpc-us-east-1
+
+export SSH_USER="ubuntu"
+
+# AWS Region
+export REGION=us-east-1
 
 # You do not need to mess with these unless you dare to use docker / kitchen 
 export REPO=stategine

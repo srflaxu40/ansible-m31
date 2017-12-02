@@ -48,7 +48,7 @@
     "source_ami": "{{user `source_ami`}}",
     "ssh_username": "{{user `ssh_user`}}",
     "region": "{{user `region`}}",
-    "ami_name": "kubenetes-master-{{timestamp}}",
+    "ami_name": "kubernetes-master-{{timestamp}}",
     "instance_type": "t2.micro",
     "iam_instance_profile": "{{user `IAM_ROLE`}}",
     "tags": {

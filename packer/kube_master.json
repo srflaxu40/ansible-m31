@@ -9,40 +9,35 @@
         "wget https://bootstrap.pypa.io/get-pip.py",
         "sudo python get-pip.py",
         "sudo pip install pyopenssl ndg-httpsclient pyasn1",
-        "sudo pip install 'ansible==2.0.1.0'",
+        "sudo pip install 'ansible==2.4.2.0'",
         "ansible --version"
       ]   
     },  
     {
-        "type": "file",
-        "source": "{{ user `vault_file`}}",
-        "destination": "/tmp/vault-file.txt"
-    },
-    {
       "type": "ansible-local",
-      "playbook_file": "kube.yml",
+      "playbook_dir": "{{ user `pwd` }}/",
+      "playbook_file": "kube-master.yml",
       "role_paths": [
-        "../roles/java",
-        "../roles/kubernetes",
-        "../roles/hosts"
+        "../roles/python",
+        "../roles/hosts",
+        "../roles/kube-master"
       ],
-      "extra_arguments": [ "--tags", "\"{{user `RUN_LIST`}}\"", "-e", "\"aws_access_key={{user `aws_access_key`}} aws_secret_access_key={{user `aws_secret_key`}} zk_host={{user `ZK_HOST`}}  pg_host={{user `PG_HOST`}}\"", "-vvvv", "--vault-password-file", "/tmp/vault-file.txt" ]
+      "extra_arguments": [ "--tags", "configure,deploy", "-u", "{{user `ssh_user`}}", "-vvvv", "-e", "\"tag_name={{user `tag_name`}} tag_environment={{user `tag_env`}} s3_bucket_name={{user `s3_bucket_name`}} kubernetes_environment={{user `tag_env`}} tag_name={{user `tag_name`}}\"" ]
     }
   ],
   "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": "",
-    "tag_name": "",
-    "RUN_LIST": "",
-    "PG_PASS": "",
-    "ZK_HOST": "",
-    "PG_HOST": "",
-    "region": "",
-    "source_ami": "",
-    "instance_type": "",
-    "security_group_id": "",
-    "subnet_id": "",
-    "IAM_ROLE": ""
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "pwd": "{{ env `PWD` }}",
+    "tag_name": "{{env `TAG_NAME`}}",
+    "tag_env": "{{env `TAG_ENV`}}",
+    "source_ami": "{{env `AMI_ID`}}",
+    "security_group_id": "{{env `SG_ID`}}",
+    "ssh_user": "{{env `SSH_USER`}}",
+    "subnet_id": "{{env `PRIVATE_SUBNET_ID`}}",
+    "region": "{{env `REGION`}}",
+    "IAM_ROLE": "{{env `IAM_ROLE`}}",
+    "s3_bucket_name": "{{env `S3_BUCKET_NAME`}}"
   },
   "builders": [{
     "type": "amazon-ebs",
@@ -50,15 +45,14 @@
     "secret_key": "{{user `aws_secret_key`}}",
     "security_group_id": "{{user `security_group_id`}}",
     "subnet_id": "{{user `subnet_id`}}",
-    "region": "{{user `region`}}",
     "source_ami": "{{user `source_ami`}}",
-    "instance_type": "{{user `instance_type`}}",
-    "ssh_username": "ubuntu",
+    "ssh_username": "{{user `ssh_user`}}",
+    "region": "{{user `region`}}",
     "ami_name": "kubenetes-master-{{timestamp}}",
+    "instance_type": "t2.micro",
     "iam_instance_profile": "{{user `IAM_ROLE`}}",
     "tags": {
-      "OS_Version": "Ubuntu v14.04",
-      "Name": "{{user `tag_name`}}"
+      "Name": "{{user `tag_name`}}-{{user `tag_env`}}"
     }
   }]
 }

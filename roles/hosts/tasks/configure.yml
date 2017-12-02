@@ -4,6 +4,7 @@
   template: src=change_hostname.sh dest=/tmp/change_hostname.sh mode=0777
             owner={{ ansible_user }}
   become: yes
+
 - name: update host name
   shell: /tmp/change_hostname.sh
   args:
@@ -21,6 +22,7 @@
     state: started
     enabled: yes
     masked: no
+  become: yes
 
 - name: Update ulimits
   pam_limits:

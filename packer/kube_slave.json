@@ -16,11 +16,11 @@
     {
       "type": "ansible-local",
       "playbook_dir": "{{ user `pwd` }}/",
-      "playbook_file": "kube-master.yml",
+      "playbook_file": "kube-slave.yml",
       "role_paths": [
         "../roles/python",
         "../roles/hosts",
-        "../roles/kube-master"
+        "../roles/kube-slave"
       ],
       "extra_arguments": [ "--tags", "configure,deploy", "-u", "{{user `ssh_user`}}", "-vvvv", "-e", "\"tag_name={{user `tag_name`}} tag_environment={{user `tag_env`}} s3_bucket_name={{user `s3_bucket_name`}} kubernetes_environment={{user `tag_env`}} tag_name={{user `tag_name`}} kube_master_ip={{user `kube_master_ip`}} kube_master_tag={{user `kube_master_tag`}}\"" ]
     }
@@ -29,7 +29,7 @@
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
     "kube_master_ip": "{{env `KUBE_MASTER_IP`}}",
-    "kube_master_tag": "{{env `kube_master_tag`}}",
+    "kube_master_tag": "{{env `KUBE_MASTER_TAG`}}",
     "pwd": "{{ env `PWD` }}",
     "tag_name": "{{env `TAG_NAME`}}",
     "tag_env": "{{env `TAG_ENV`}}",
@@ -50,7 +50,7 @@
     "source_ami": "{{user `source_ami`}}",
     "ssh_username": "{{user `ssh_user`}}",
     "region": "{{user `region`}}",
-    "ami_name": "kubernetes-master-{{timestamp}}",
+    "ami_name": "kubernetes-slave-{{timestamp}}",
     "instance_type": "t2.micro",
     "iam_instance_profile": "{{user `IAM_ROLE`}}",
     "tags": {

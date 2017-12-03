@@ -19,7 +19,7 @@ export SUBNET_ID=subnet-9639d1b9
 export PRIVATE_SUBNET_ID=subnet-90093b9c
 
 # server instance will be tagged TAG_NAME-TAG_ENV
-export TAG_NAME=kube_master
+export TAG_NAME=kube_slave
 export TAG_ENV=development
 
 # ubuntu 16
@@ -61,7 +61,7 @@ export S3_BUCKET_NAME="statengine-devops"
 
 # You have to change this (must change) once you run the kube-master as a new
 # instance is created.
-export KUBE_MASTER_IP=10.1.7.245
+export KUBE_MASTER_IP=10.1.2.166
 
 # Remember for ansible to substitute hyphens for underscores.
 # This is only temporary until we figure out a better way to toss along things
@@ -70,7 +70,7 @@ export KUBE_MASTER_IP=10.1.7.245
 #  54 export SED_NAME=`echo $TAG_NAME | sed 's/-/_/g'`
 #  55 export SED_ENV=`echo $TAG_ENV | sed 's/-/_/g'`
 #
-export KUBE_MASTER_TAG="kube_master_test"
+export KUBE_MASTER_TAG="kube_master"
 
 # These are important parameters for the kubernetes slave (kube-slave.yml) playbook.  Without these
 # kubeadm join will fail to join the master.  These are also copied to your s3 bucket specified

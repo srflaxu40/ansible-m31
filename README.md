@@ -116,7 +116,7 @@ scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openv
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
 ```
 
-- *Packer* - Currentl the master does not work because it cannot dynamically generate new tokens / certs / keys on boot.  Stand up the master using ansible (outlined above), and then upload those tokens to your respective s3 buckets with the following format:
+- *Packer* - Currently the master does not work because it cannot dynamically generate new tokens / certs / keys on boot.  Stand up the master using ansible (outlined above), and then upload those tokens to your respective s3 buckets with the following format:
 
 ```
 aws s3 cp <file> s3://{{s3_bucket_name}}/kube-forever-token-{{kube_master_tag}}-{{kubernetes_environment}}.txt

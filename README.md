@@ -116,6 +116,15 @@ scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openv
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
 ```
 
+- *Packer* - Currentl the master does not work because it cannot dynamically generate new tokens / certs / keys on boot.  Stand up the master using ansible (outlined above), and then upload those tokens to your respective s3 buckets with the following format:
+
+```
+aws s3 cp <file> s3://{{s3_bucket_name}}/kube-forever-token-{{kube_master_tag}}-{{kubernetes_environment}}.txt
+
+aws s3 cp <file> s3://{{s3_bucket_name}}/kube-sha256-token-{{kube_master_tag}}-{{kubernetes_environment}}.txt
+```
+- The above is the path/format the kube-slave ansible playbook expects the join token and sha256 hash to be in; see below for more instructions...
+
 ## kube-slave:
 * See *kube-master* above for instructions on populating the init token / discovery token ca cert hash.
 * The variables you need to set in `ansible_env` are:
@@ -129,6 +138,14 @@ ENVIRONMENT
   - KUBE_MASTER_TAG is the prettified tag name in ansible format (hyphens are changed to underscores); kube-master in the kube-master playbook becomes *kube_master* in the kube-slave playbook.  This is because ansible does not support hyphens in the tag names / environment.
   - ENVIRONMENT is arbitrary but required to tag the instances.
 * Using the above information, the kube-slave playbook provisions instances and joins them to the kube master based on KUBE_MASTER_IP.  Tokens are taken from S3, which is why the KUBE_MASTER_TAG name is required as it is to arbitrary per user.
+
+- *Packer* - Packer will pack a kubernetes slave - be sure to update the following environment variables in `ansible_env`:
+
+```
+KUBE_MASTER_TAG
+KUBE_MASTER_IP
+```
+
 
 ---
 

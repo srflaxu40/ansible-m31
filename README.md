@@ -109,10 +109,18 @@ ENVIRONMENT
 S3_BUCKET_NAME
 ```
 
+* Now source the file:
+`source ansible_env`
+
+* Now create the ec2 instance and provision it:
+`./run.sh ~/.ssh/<your ec2 key >.pem openvpn openvpn true`
+
 * After provisioning with openvpn, do not forget to copy your client1.ovpn file to your local box and download [tunnelblik](https://tunnelblick.net/downloads.html)
 ```
-scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openvpn server>:~/client-configs/files/client1.ovpn .
+scp -i ~/.ssh/<your ec2 key >.pem ubuntu@<your ip address for new openvpn server>:~/client-configs/files/client1.ovpn .
 ```
+
+* Add this to tunnelblik, and connect to interact with your VPC.
 
 ## kube-master:
 * This stands up a kubernetes master instance utilizing kubeadm.

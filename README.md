@@ -78,7 +78,7 @@ EXAMPLE:
 * Here is an example of how ansible uses the tag name and environment along with dynamic inventory to provision the instance:
 ```
 ---
-# file: packer/kube.yml
+# file: packer/openvpn.yml
 - name: Configure and deploy kube node
   hosts: tag_Name_{{ tag_name }}_{{ tag_environment }}
   remote_user: ubuntu
@@ -87,10 +87,28 @@ EXAMPLE:
   roles:
     - python
     - hosts
-    - kube-master
+    - openvpn
 ```
 
 ## OpenVPN:
+* Before running the openvpn provisioning, be sure that you set the following environment variables:
+```
+SG_ID
+SUBNET_ID (must be a public subnet with Internet Gateway Access)
+TAG_NAME (ex. openvpn)
+TAG_ENV (ex. development)
+AMI_ID
+IAM_ROLE
+SSH_KEY
+REGION
+ORG_COUNTRY=US
+ORG_PROVINCE=CA
+ORG_LOCATION=Oakland
+ORG_NAME="your org"
+ENVIRONMENT
+S3_BUCKET_NAME
+```
+
 * After provisioning with openvpn, do not forget to copy your client1.ovpn file to your local box and download [tunnelblik](https://tunnelblick.net/downloads.html)
 ```
 scp -i ~/.ssh/production-vpc-us-east-1.pem ubuntu@<your ip address for new openvpn server>:~/client-configs/files/client1.ovpn .

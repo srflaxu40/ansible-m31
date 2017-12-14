@@ -9,7 +9,7 @@ subnet_id: "{{ lookup('env','SUBNET_ID') }}"
 tag_name: "{{ lookup('env','TAG_NAME') }}"
 tag_environment: "{{ lookup('env','TAG_ENV') }}"
 count: 1
-region: "us-east-1"
+region: "{{ lookup('env','REGION') }}"
 iam_role: "{{ lookup('env','IAM_ROLE') }}"
 storage: "8"
 

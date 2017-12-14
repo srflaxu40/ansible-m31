@@ -29,9 +29,7 @@ eval "$(pyenv virtualenv-init -)"
 
 * You should now be in the ansible project.  Install your pip modules (one-time only):
 ```
-pip install boto
-pip install ansible
-pip install awscli
+pip install requirements.txt
 ```
 
 ## Roles:
@@ -78,7 +76,7 @@ EXAMPLE:
 * Here is an example of how ansible uses the tag name and environment along with dynamic inventory to provision the instance:
 ```
 ---
-# file: packer/openvpn.yml
+# file: openvpn.yml
 - name: Configure and deploy kube node
   hosts: tag_Name_{{ tag_name }}_{{ tag_environment }}
   remote_user: ubuntu

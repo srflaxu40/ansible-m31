@@ -15,7 +15,7 @@ USAGE:
 
   ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
  
-  \$PRIVATE_KEY_PATH - the path to your priave key PEM file downloades when you created an IAM key in AWS.
+  \$PRIVATE_KEY_PATH - the path to your private key PEM file downloades when you created an IAM key in AWS.
   \$ROLE - the role (play) you wish to run; under ./roles/
   \$TAG_NAME - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
     variable set in the ansible_env file.

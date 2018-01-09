@@ -1,6 +1,6 @@
 # ansible-m31
 
-Run, pack, and provision your infrastructure with Ansible code against Amazon's Cloud (AWS).
+Run, and provision your infrastructure with Ansible code against Amazon's Cloud (AWS).
 Test your code on-the-fly with ansible-kitchen, and docker for mac.
 
 
@@ -122,12 +122,10 @@ scp -i ~/.ssh/<your ec2 key >.pem ubuntu@<your ip address for new openvpn server
 
 ## kube-master:
 * This stands up a kubernetes master instance utilizing kubeadm.
-* This is meant to be run with packer, but can be run using `run.sh` as the above example:
 ```
 ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
 ```
 
-* This play is used in conjunction with packer to create a kube master via `kubeadm init`, and join slaves via `kubeadm join`.
 * Join commands for kubeadm can be found on the kube-master instance you provision in the */tmp/kubey-join-cmd* file that is created.  This file has the base command that is needed by slaves to join, however, the default init token should provided not be used...
 * _Note_ - the following requires you have the root ssh key you provisioned the instance with in the `./run.sh` script.
   - In the kube-master.yml playbook's kube-init.sh a non-expiring token is created [here](https://github.com/srflaxu40/ansible-m31/blob/master/roles/kube-master/templates/kube-init.sh#L14).  *This* is the token that should be used in the join command for slaves.
@@ -163,41 +161,3 @@ ENVIRONMENT
   - ENVIRONMENT is arbitrary but required to tag the instances.
 * Using the above information, the kube-slave playbook provisions instances and joins them to the kube master based on KUBE_MASTER_IP.  Tokens are taken from S3, which is why the KUBE_MASTER_TAG name is required as it is to arbitrary per user.
 
-- *Packer* - Packer will pack a kubernetes slave - be sure to update the following environment variables in `ansible_env`:
-
-```
-KUBE_MASTER_TAG
-KUBE_MASTER_IP
-```
-
-
----
-
-## Testing your roles with ansible-kitchen (in alpha)
-
-### kitchen setup - (skip if you don't care for kitchen) rbenv instructions (v2.3.2) -
-* Installing... [rbenv](https://jasoncharnes.com/install-ruby/), and upgrade your ruby to v2.3.2.v
-```
-brew install rbenv
-rbenv init; # Paste output into your ~/.bash_profile
-rbenv install 2.3.2
-```
-
-* Now install your gems
-```
-rbenv exec gem install bundler
-rbenv exec bundle install
-rbenv exec kitchen -h
-```
-
-* Update the `ansible_env` file to your respective environment variables for your AWS account before attempting test kitchen.
-  Don't forget to source it:
-`source ansible_env`
-
-* This will run ${ROLE} in your ${ROLE}.yml file specified in ${HOSTFILE}.  This is great for just testing out configuration changes
-  against a lightweight runtime container.  *Packer* does the actual packing into AMIs.
-  * These variables are used in the `.kitchen.yml` file under the top-most parent directory of this repository.
-
-```
-rbenv exec kitchen converge
-```

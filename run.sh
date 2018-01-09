@@ -38,9 +38,9 @@ source ansible_env
 export ROLE=$2
 export TAG_NAME=$3
 export TAG_ENV=${ENVIRONMENT}
-export SKIP=$4
+export NO_SKIP=$4
 
-if [ "$SKIP" == "true" ]; then
+if [ "$NO_SKIP" == "true" ]; then
     ansible-playbook -i ./hosts ec2.yml -vvvvv -u ubuntu --tags "configure,deploy"
 
     echo "Waiting for server to boot up in order to ssh..."

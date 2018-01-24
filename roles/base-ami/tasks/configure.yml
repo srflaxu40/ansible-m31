@@ -1,8 +1,8 @@
 # Task - slave
 # Configure server to increase file limits / handles
 
-#- name: Copy over limits
-#  template: src=limits.conf.j2 dest=/etc/security/limits.conf  mode=0644 owner=root
+- name: Copy over limits
+  template: src=limits.conf.j2 dest=/etc/security/limits.conf  mode=0644 owner=root
 
 - name: Copy over common sessions file
   become: yes

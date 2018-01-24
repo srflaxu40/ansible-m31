@@ -1,0 +1,57 @@
+{
+  "provisioners": [
+    {   
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo apt-get update",
+        "sudo apt-get install -y libssl-dev libffi-dev python-dev build-essential",
+        "wget https://bootstrap.pypa.io/get-pip.py",
+        "sudo python get-pip.py",
+        "sudo pip install pyopenssl ndg-httpsclient pyasn1",
+        "sudo pip install 'ansible==2.4.2.0'",
+        "ansible --version"
+      ]   
+    },  
+    {
+      "type": "ansible-local",
+      "playbook_file": "base-ami.yml",
+      "role_paths": [
+        "./roles/python",
+        "./roles/base-ami",
+        "./roles/hosts"
+      ],
+      "extra_arguments": [ "-vv", "--tags", "\"{{user `RUN_LIST`}}\"", "-e", "\"tag_name={{user `tag_name`}} tag_environment={{user `tag_environment`}}\"" ]
+    }
+  ],
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "tag_environment": "",
+    "tag_name": "",
+    "RUN_LIST": "",
+    "region": "",
+    "source_ami": "",
+    "instance_type": "",
+    "security_group_id": "",
+    "subnet_id": "",
+    "IAM_ROLE": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "iam_instance_profile": "{{user `IAM_ROLE`}}",
+    "instance_type": "{{user `instance_type`}}",
+    "ssh_username": "ubuntu",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "security_group_id": "{{user `security_group_id`}}",
+    "source_ami": "{{user `source_ami`}}",
+    "subnet_id": "{{user `subnet_id`}}",
+    "region": "{{user `region`}}",
+    "ami_name": "commons-{{timestamp}}",
+    "tags": {
+      "OS_Version": "Ubuntu v16.04",
+      "OS": "{{user `tag_name`}}"
+    }
+  }]
+}

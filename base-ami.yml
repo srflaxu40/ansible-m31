@@ -1,7 +1,8 @@
 ---
-# file: packer/kube.yml
+# file: base-ami.yml
 - name: Configure and deploy base AMI
-  hosts: tag_Name_{{ tag_name }}_{{ tag_environment }}
+  hosts: 127.0.0.1
+  connection: local
   remote_user: ubuntu
   become: yes
   gather_facts: False

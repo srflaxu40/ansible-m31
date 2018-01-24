@@ -6,4 +6,6 @@
   become: yes
   gather_facts: False
   roles:
+    - python
+    - hosts
     - base-ami

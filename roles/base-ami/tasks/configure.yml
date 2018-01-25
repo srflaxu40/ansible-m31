@@ -22,3 +22,15 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Inttall unattended-upgrades
+  apt:
+    name: unattended-upgrades
+    state: present
+    install_recommends: yes
+
+- name: Enable unattended-upgrades
+  shell: dpkg-reconfigure unattended-upgrades
+  args:
+    executable: /bin/bash
+  become: yes

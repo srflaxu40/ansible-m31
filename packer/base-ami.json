@@ -48,8 +48,8 @@
     "ami_block_device_mappings": [
       {
         "volume_size": 128,
-        "volume_type": "gp2",
-        "virtual_name": "eth0"
+        "volume_type": "gp2"
+        "device_name": "/dev/sda"
        }
     ], 
     "source_ami": "{{user `source_ami`}}",

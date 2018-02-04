@@ -49,7 +49,7 @@
       {
         "volume_size": 128,
         "volume_type": "gp2",
-        "device_name": "/dev/sda"
+        "device_name": "/dev/sda1"
        }
     ], 
     "source_ami": "{{user `source_ami`}}",

@@ -45,6 +45,12 @@
     "ssh_username": "ubuntu",
     "secret_key": "{{user `aws_secret_key`}}",
     "security_group_id": "{{user `security_group_id`}}",
+    "ami_block_device_mappings": [
+      {
+        "volume_size": 128,
+        "volume_type": "gp2"
+       }
+    ], 
     "source_ami": "{{user `source_ami`}}",
     "subnet_id": "{{user `subnet_id`}}",
     "region": "{{user `region`}}",

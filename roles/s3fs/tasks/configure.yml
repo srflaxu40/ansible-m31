@@ -1,0 +1,65 @@
+# task: configure
+
+- name: Install Git
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+       - automake
+       - autotools-dev
+       - fuse
+       - g++ 
+       - git
+       - libcurl4-gnutls-dev
+       - libfuse-dev
+       - libssl-dev
+       - libxml2-dev
+       - make
+       - pkg-config
+
+- name: Make s3fs dir
+  file:
+    path: /opt/s3fs
+    state: directory
+    mode: 0777
+
+- name: Clone s3fs repo
+  git:
+    repo: "https://github.com/s3fs-fuse/s3fs-fuse.git"
+    dest: /opt/s3fs/
+
+- name: Compile fuse
+  shell: ./autogen.sh 
+  args:
+    chdir: /opt/s3fs
+    executable: /bin/bash
+
+- name: Configure
+  shell: ./configure 
+  args:
+    chdir: /opt/s3fs
+    executable: /bin/bash
+
+- name: make
+  make:
+    chdir: /opt/s3fs
+
+- name: make install
+  make:
+    chdir: /opt/s3fs
+    target: install
+  become: yes
+
+- name: Create global s3fs creds file
+  template: src=passwd-s3fs.j2 dest=/etc/passwd-s3fs  mode=0600 owner={{ ansible_ssh_user }}
+
+- name: Make mount dir
+  file:
+    path: /mnt
+    state: directory
+    mode: 0777
+
+- name: Add entry to fstab
+  shell: |
+    echo 's3fs#{{ s3fs_bucket }} /mnt fuse _netdev,allow_other 0 0' >> /etc/fstab

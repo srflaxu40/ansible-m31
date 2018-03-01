@@ -1,0 +1,5 @@
+---
+# Variables for ec2 role
+access_key: "{{ lookup('env','access_key') }}"
+secret_access_key: "{{ lookup('env','secret_access_key') }}"
+s3fs_bucket: "{{ lookup('env','s3fs_bucket') }}"

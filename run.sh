@@ -40,6 +40,7 @@ export TAG_NAME=$3
 export TAG_ENV=${ENVIRONMENT}
 export NO_SKIP=$4
 
+# when set to true, we want to create an EC2 instance.  Otherwise, carry-on.
 if [ "$NO_SKIP" == "true" ]; then
     ansible-playbook -i ./hosts ec2.yml -vvvvv -u ubuntu --tags "configure,deploy"
 

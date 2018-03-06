@@ -1,5 +1,0 @@
-# include deploy and configuration
-- include: configure.yml
-  tags: ['configure']
-- include: deploy.yml
-  tags: ['deploy']

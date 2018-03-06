@@ -39,8 +39,6 @@ pip install requirements.txt
 ### Really Important (ansible_env):
 * The _*ansible_env*_ file sets environment variables that are required to be changed; this is super important for you to customize to your own values.  Others that exist, but do not have to be changed (defaults) are inside the standard vars directory for a role `roles/<role name>/vars/main.yml`.
   - These vars can also be overridden on the command line or inside the run.sh script by adding the `--extra-args` argument.
-  - The s3 bucket you specify in this file for `S3_BUCKET_NAME` should have proper access policies restricting only to users that are authenticated in your AWS account.  Although users cannot interact with your kubernetes cluster without a VPN anyway.
-  - Also, ensure your instances are spun up with proper IAM access to s3.  The Kubernetes playbooks utilize S3 to access generated configuration the the kube-master.yml playbook creates.  It also requires the ability to provision new instances in EC2.  Note that this is set in ansible_env via the `IAM_ROLE` environment variable.
 * Important - this has only been tested on the base Ubuntu AMI for 16.04 in us-east-1 (ami-cd0f5cb6).  Running it on
   other AMIs may require modifications / forking this repository.
 * This supports only the AWS cloud.
@@ -68,16 +66,15 @@ USAGE:
 
 EXAMPLE:
 
-  ./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
-  
-  This will create a brand new EC2 instance of type specified in ansible_env, and tagged kube-master-development with the root key named production-vpc-us-east-1 in AWS IAM, and provisioned with the kube-master.yml playbook specified with $ROLE.
+  ./run.sh ~/.ssh/production-vpc-us-east-1.pem openvpn openvpn true
 ```
+
 * Please note that specifying *false* as the BOOL argument expects that an instance exists with the tag name and environment variable (inside ansible_env).  This then provisions that instance with the plays designated by ROLE.
 * Here is an example of how ansible uses the tag name and environment along with dynamic inventory to provision the instance:
 ```
 ---
 # file: openvpn.yml
-- name: Configure and deploy kube node
+- name: Configure and deploy openvpn
   hosts: tag_Name_{{ tag_name }}_{{ tag_environment }}
   remote_user: ubuntu
   become: yes 
@@ -119,45 +116,4 @@ scp -i ~/.ssh/<your ec2 key >.pem ubuntu@<your ip address for new openvpn server
 ```
 
 * Add this to tunnelblik, and connect to interact with your VPC.
-
-## kube-master:
-* This stands up a kubernetes master instance utilizing kubeadm.
-```
-./run.sh ~/.ssh/production-vpc-us-east-1.pem kube-master kube-master-test true
-```
-
-* Join commands for kubeadm can be found on the kube-master instance you provision in the */tmp/kubey-join-cmd* file that is created.  This file has the base command that is needed by slaves to join, however, the default init token should provided not be used...
-* _Note_ - the following requires you have the root ssh key you provisioned the instance with in the `./run.sh` script.
-  - In the kube-master.yml playbook's kube-init.sh a non-expiring token is created [here](https://github.com/srflaxu40/ansible-m31/blob/master/roles/kube-master/templates/kube-init.sh#L14).  *This* is the token that should be used in the join command for slaves.
-    - This can be found in the file  */tmp/kube-forever-token*.
-* For [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) users, the cluster configuraton can be found in the `/etc/kubernetes/admin.conf` file.
-  - This is also set to a configmap in the kube-master playbook that is set when the task runs.  You can get it by:
-    `kubectl get configmaps kube-admin-<environment>`
-* The discovery token `--discovery-token-ca-cert-hash` used in the slave kubeadm join command (see *kube-slave* playbook) can be created by running the following on your kubernetes master node:
-```
-openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
-```
-
-- *Packer* - Currently the master does not work because it cannot dynamically generate new tokens / certs / keys on boot.  Stand up the master using ansible (outlined above), and then upload those tokens to your respective s3 buckets with the following format:
-
-```
-aws s3 cp <file> s3://{{s3_bucket_name}}/kube-forever-token-{{kube_master_tag}}-{{kubernetes_environment}}.txt
-
-aws s3 cp <file> s3://{{s3_bucket_name}}/kube-sha256-token-{{kube_master_tag}}-{{kubernetes_environment}}.txt
-```
-- The above is the path/format the kube-slave ansible playbook expects the join token and sha256 hash to be in; see below for more instructions...
-
-## kube-slave:
-* See *kube-master* above for instructions on populating the init token / discovery token ca cert hash.
-* The variables you need to set in `ansible_env` are:
-```
-S3_BUCKET_NAME
-KUBE_MASTER_IP
-KUBE_MASTER_TAG
-ENVIRONMENT
-```
-  - Note that KUBE_MASTER_IP comes directly from the private IP of the instance you provisioned for kube-master.
-  - KUBE_MASTER_TAG is the prettified tag name in ansible format (hyphens are changed to underscores); kube-master in the kube-master playbook becomes *kube_master* in the kube-slave playbook.  This is because ansible does not support hyphens in the tag names / environment.
-  - ENVIRONMENT is arbitrary but required to tag the instances.
-* Using the above information, the kube-slave playbook provisions instances and joins them to the kube master based on KUBE_MASTER_IP.  Tokens are taken from S3, which is why the KUBE_MASTER_TAG name is required as it is to arbitrary per user.
 

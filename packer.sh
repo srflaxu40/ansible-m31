@@ -9,7 +9,7 @@ export RUN_LIST="configure,deploy"
 export ROLE="$1"
 export PACKER_PATH="${3:-/usr/local/bin/}"
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
 
   echo "Usage: `basename $0` <ansible role> <instance type> [packer path]"
   exit $E_BADARGS

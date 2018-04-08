@@ -49,6 +49,3 @@ export ORG_PROVINCE=CA
 export ORG_LOCATION=Oakland
 export ORG_NAME="Prominent Edge"
 
-# The environment (can be anything it is more of an identifier for tagging / provisioning)
-export ENVIRONMENT=development
-

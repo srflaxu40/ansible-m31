@@ -1,0 +1,7 @@
+---
+# file: jenkins-master.yml
+- name: Configure and deploy Jenkins Master
+  hosts: all
+  gather_facts: True
+  roles:
+    - jenkins

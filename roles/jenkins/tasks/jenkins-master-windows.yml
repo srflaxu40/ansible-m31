@@ -1,0 +1,64 @@
+# jenkins-windows.yml
+# installs jenkins master on windows
+
+- name: Install multiple packages
+  win_chocolatey:
+    name: '{{ item }}'
+    state: present
+  with_items:
+  - android-sdk
+  - directx
+  - dotnetcore-sdk
+  - jfrog-cli
+  - jre8
+  - javaruntime
+  - jenkins
+  - kb2999226
+  - python
+  - unity-il2cpp
+  - vcredist-all
+  - visualstudio2017professional
+  - visualstudio2017-workload-nativedesktop
+  #- windows-sdk-10.0
+  #- visualstudio2017-workload-universal
+
+- name: Remove auto init password file
+  win_file:
+    force: yes
+    path: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
+    state: absent
+
+- name: Restart to pickup init password
+  win_service:
+    name: jenkins
+    state: stopped
+
+- name: Copy initPassword file to Jenkins Master instance
+  win_copy:
+    force: yes
+    src: initialAdminPassword
+    dest: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
+
+- name: Copy base config
+  win_copy:
+    force: yes
+    src: config.xml
+    dest: C:\Program Files (x86)\Jenkins\config.xml
+
+- name: Allow Administrator
+  win_acl:
+    user: Administrator
+    path: C:\Program Files (x86)\Jenkins\config.xml
+    type: allow
+    rights: Read,Write,Modify,FullControl,Delete
+    state: present
+
+- name: Create init.d groovy dir
+  win_file:
+    path: C:\Program Files (x86)\Jenkins\init.groovy.d
+    state: directory
+
+- name: Restart to pickup init password
+  win_service:
+    name: jenkins
+    state: restarted

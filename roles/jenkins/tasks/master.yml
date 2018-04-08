@@ -1,0 +1,5 @@
+# master.yml
+# Configure Jenkins master on deb or windows
+
+- include: jenkins-master-windows.yml
+  when: ansible_os_family == "Windows"

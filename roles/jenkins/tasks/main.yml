@@ -1,0 +1,3 @@
+# include deploy and configuration
+- include: master.yml
+  tags: ['master']

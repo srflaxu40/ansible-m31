@@ -66,17 +66,18 @@ pip install requirements.txt
 ```
 USAGE:
 
-  ./run.sh $PRIVATE_KEY_PATH $ROLE $TAG_NAME $BOOL
+  ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
  
-  $PRIVATE_KEY_PATH - the path to your private key PEM file downloades when you created an IAM key in AWS.
-  $ROLE             - the role (play) you wish to run; under ./roles/
-  $TAG_NAME         - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
+  \$PRIVATE_KEY_PATH - the path to your private key PEM file downloades when you created an IAM key in AWS.
+  \$ROLE - the role (play) you wish to run; under ./roles/
+  \$TAG_NAME - the name you wish to tag your instance with; this will automatically prefix the ENVIRONMENT
     variable set in the ansible_env file.
-  $BOOL             - true or false.  Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
+  \$ENVIRONMENT - the environment; this gets joined with tag name for dynamic inventory.
+  \$BOOL - Spin up a new EC2 instance or provision the old one using ansible AWS EC2 tagging in your playbook.
 
 EXAMPLE:
 
-  ./run.sh ~/.ssh/production-vpc-us-east-1.pem openvpn openvpn true
+  ./run.sh ~/.ssh/production-vpc-us-east-1.pem openvpn openvpn development true
 ```
 
 * Please note that specifying *false* as the BOOL argument expects that an instance exists with the tag name and environment variable (inside ansible_env).  This then provisions that instance with the plays designated by ROLE.
@@ -100,8 +101,6 @@ EXAMPLE:
 ```
 SG_ID
 SUBNET_ID (must be a public subnet with Internet Gateway Access)
-TAG_NAME (ex. openvpn)
-TAG_ENV (ex. development)
 AMI_ID
 IAM_ROLE
 SSH_KEY
@@ -110,8 +109,6 @@ ORG_COUNTRY=US
 ORG_PROVINCE=CA
 ORG_LOCATION=Oakland
 ORG_NAME="your org"
-ENVIRONMENT
-S3_BUCKET_NAME
 ```
 
 * Now source the file:

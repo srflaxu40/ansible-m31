@@ -17,10 +17,6 @@ export SUBNET_ID=subnet-9639d1b9
 # For use with instances that do not require public access.
 export PRIVATE_SUBNET_ID=subnet-90093b9c
 
-# server instance will be tagged TAG_NAME-TAG_ENV
-export TAG_ENV=development
-
-# ubuntu 16
 export AMI_ID=ami-cd0f5cb6
 
 # IAM Role with sufficient permissions to read/write to s3 and access to EC2 (read/write)

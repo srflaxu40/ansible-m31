@@ -39,8 +39,4 @@
     mode: 0644
 
 - name: Enable unattended-upgrades
-  shell: dpkg-reconfigure unattended-upgrades
-  args:
-    executable: /bin/bash
-  become: yes
-
+  command: sudo dpkg-reconfigure -f noninteractive unattended-upgrades

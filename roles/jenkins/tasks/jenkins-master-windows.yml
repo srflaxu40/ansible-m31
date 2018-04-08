@@ -22,6 +22,11 @@
   #- windows-sdk-10.0
   #- visualstudio2017-workload-universal
 
+- name: Install P4 cli
+  win_chocolatey:
+    name: p4
+    version: '2015.2'
+
 - name: Remove auto init password file
   win_file:
     force: yes

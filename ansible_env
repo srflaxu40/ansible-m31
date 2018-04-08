@@ -22,9 +22,6 @@ export AMI_ID=ami-cd0f5cb6
 # IAM Role with sufficient permissions to read/write to s3 and access to EC2 (read/write)
 export IAM_ROLE="role-deploy"
 
-# A private key corresponding to an IAM key pair created already in AWS
-export SSH_KEY=~/.ssh/production-vpc-us-east-1.pem
-
 # The name of th aforementioned key in AWS
 export SSH_KEY=production-vpc-us-east-1
 

@@ -103,7 +103,7 @@ SG_ID
 SUBNET_ID (must be a public subnet with Internet Gateway Access)
 AMI_ID
 IAM_ROLE
-SSH_KEY
+SSH_KEY (the name of the key without the .PEM extension in EC2->Keys)
 REGION
 ORG_COUNTRY=US
 ORG_PROVINCE=CA

@@ -3,6 +3,15 @@
 Run, and provision your infrastructure with Ansible code against Amazon's Cloud (AWS).
 Test your code on-the-fly with ansible-kitchen, and docker for mac.
 
+### TABLE OF CONTENTS
+
+   * [ansible-m31](#ansible-m31)
+   * [Development Setup](#development-setup)
+      * [Setting up your local virtualenv](#setting-up-your-local-virtualenv)
+      * [Roles:](#roles)
+         * [Really Important (ansible_env):](#really-important-ansible_env)
+      * [OpenVPN:](#openvpn)
+
 
 # Development Setup
 

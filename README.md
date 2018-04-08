@@ -130,9 +130,14 @@ scp -i ~/.ssh/<your ec2 key >.pem ubuntu@<your ip address for new openvpn server
 
 
 # Windows:
+* This requres you install the pywinrm module in requirements.txt
 * For windows machines you need to follow the directions outlined in docs/WINDOWS-README.md in order to setup WinRM as a service, and enable basic auth.
 * The window-hosts file outlines hosts in order to provision.
 * You must ensure ansible fact gathering is enabled (in windows-hosts).
 * The following roles support windows provisioning:
   - Jenkins
   - Artifactory
+* Example of provisioning a remote Windows server over WinRM; notice we set our basic auth password for our windows user on the CML; Other auth mechanisms such as Kerberos, AD exist:
+```
+ansible-playbook -i windows-hosts -e "ansible_password=asdfio12!@" jenkins-master.yml --tags="master" -vvv
+```

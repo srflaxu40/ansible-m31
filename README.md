@@ -6,7 +6,6 @@ Test your code on-the-fly with ansible-kitchen, and docker for mac.
 ### TABLE OF CONTENTS
 
    * [ansible-m31](#ansible-m31)
-         * [TABLE OF CONTENTS](#table-of-contents)
    * [Development Setup](#development-setup)
       * [Setting up your local virtualenv](#setting-up-your-local-virtualenv)
       * [Roles:](#roles)

@@ -6,11 +6,13 @@ Test your code on-the-fly with ansible-kitchen, and docker for mac.
 ### TABLE OF CONTENTS
 
    * [ansible-m31](#ansible-m31)
+         * [TABLE OF CONTENTS](#table-of-contents)
    * [Development Setup](#development-setup)
       * [Setting up your local virtualenv](#setting-up-your-local-virtualenv)
       * [Roles:](#roles)
          * [Really Important (ansible_env):](#really-important-ansible_env)
-      * [OpenVPN:](#openvpn)
+   * [OpenVPN:](#openvpn)
+   * [Windows:](#windows)
 
 
 # Development Setup
@@ -94,7 +96,7 @@ EXAMPLE:
     - openvpn
 ```
 
-## OpenVPN:
+# OpenVPN:
 * Before running the openvpn provisioning, be sure that you set the following environment variables:
 ```
 SG_ID
@@ -126,3 +128,11 @@ scp -i ~/.ssh/<your ec2 key >.pem ubuntu@<your ip address for new openvpn server
 
 * Add this to tunnelblik, and connect to interact with your VPC.
 
+
+# Windows:
+* For windows machines you need to follow the directions outlined in docs/WINDOWS-README.md in order to setup WinRM as a service, and enable basic auth.
+* The window-hosts file outlines hosts in order to provision.
+* You must ensure ansible fact gathering is enabled (in windows-hosts).
+* The following roles support windows provisioning:
+  - Jenkins
+  - Artifactory

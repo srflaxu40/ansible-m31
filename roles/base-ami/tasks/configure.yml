@@ -40,3 +40,11 @@
 
 - name: Enable unattended-upgrades
   command: sudo dpkg-reconfigure -f noninteractive unattended-upgrades
+
+- name: Ensure the agent is installed
+  command:
+    wget https://s3.amazonaws.com/remote-collector/agent/v18/install_cht_perfmon.sh -O /tmp/install_cht_perfmon.sh &&
+    /tmp/install_cht_perfmon.sh 18 {{ cht_unique_registration_code }} aws
+  args:
+    creates: /opt/cht_perfmon
+  sudo: yes

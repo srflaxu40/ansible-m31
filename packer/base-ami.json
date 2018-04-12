@@ -56,7 +56,6 @@
     "source_ami": "{{user `source_ami`}}",
     "subnet_id": "{{user `subnet_id`}}",
     "region": "{{user `region`}}",
-    "cht_unique_registration_code": "{{user `cht_unique_registration_code`}}",
     "ami_name": "commons-{{timestamp}}",
     "tags": {
       "OS_Version": "Ubuntu v16.04",

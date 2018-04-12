@@ -29,4 +29,5 @@ ${PACKER_PATH}packer build \
     -var "security_group_id=${SG_ID}" \
     -var "subnet_id=${PRIVATE_SUBNET_ID}" \
     -var "IAM_ROLE=${IAM_ROLE}" \
+    -var "cht_unique_registration_code=${CH_TOKEN}" \
     ./packer/${ROLE}.json

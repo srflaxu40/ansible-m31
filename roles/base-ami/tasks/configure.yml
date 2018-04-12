@@ -45,7 +45,7 @@
   command: "{{item}}"
   args:
     creates: /opt/cht_perfmon
-  sudo: yes
+  become: yes
   with_items:
        - wget https://s3.amazonaws.com/remote-collector/agent/v18/install_cht_perfmon.sh -O /tmp/install_cht_perfmon.sh
        - /tmp/install_cht_perfmon.sh 19 {{ cht_unique_registration_code }} aws

@@ -132,8 +132,7 @@ scp -i ~/.ssh/<your ec2 key >.pem ubuntu@<your ip address for new openvpn server
 * You must ensure ansible fact gathering is enabled (in windows-hosts).
 * The following roles support windows provisioning:
   - Jenkins
-  - Artifactory
 * Example of provisioning a remote Windows server over WinRM; notice we set our basic auth password for our windows user on the CML; Other auth mechanisms such as Kerberos, AD exist:
 ```
-ansible-playbook -i windows-hosts -e "ansible_password=asdfio12!@" jenkins-master.yml --tags="master" -vvv
+ansible-playbook -i windows-hosts -e "target=jknepper ansible_password=asdfio12!@" jenkins-master.yml --tags="master" -vvv
 ```

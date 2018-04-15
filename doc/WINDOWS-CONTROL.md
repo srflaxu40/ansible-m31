@@ -1,5 +1,13 @@
 # windows-control
 
+* A Power Shell script encapsulates these directions.  You can setup WinRM and open the proper ports for Ansible by running 
+  the script located in the _ansible-m31/bin_ directory.
+  * Copy it to a Power Shell that was opened in Adminstrator mode and run the following:
+```
+winrm quickconfig
+./ConfigureWinRmForRemoting.ps1
+```
+
 * Modern Ansible can interact with Windows 10 / Server 2016 in a few varieties:
   * Enable Developer Mode and Windows Subsystem Linux and run Ansible as you would on a _nix_ box.
   * _Normal Way_ - Install WinRM, enable your flavor of authentication, and control your Windows Machines.

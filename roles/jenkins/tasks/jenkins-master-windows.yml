@@ -33,10 +33,10 @@
     path: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
     state: absent
 
-- name: Restart to pickup init password
-  win_service:
-    name: jenkins
-    state: stopped
+#- name: Restart to pickup init password
+#  win_service:
+#    name: jenkins
+#    state: stopped
 
 - name: Copy initPassword file to Jenkins Master instance
   win_copy:
@@ -44,26 +44,39 @@
     src: initialAdminPassword
     dest: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
 
-- name: Copy base config
-  win_copy:
-    force: yes
-    src: config.xml
-    dest: C:\Program Files (x86)\Jenkins\config.xml
+#- name: Copy base config
+#  win_copy:
+#    force: yes
+#    src: config.xml
+#    dest: C:\Program Files (x86)\Jenkins\config.xml
 
-- name: Allow Administrator
-  win_acl:
-    user: Administrator
-    path: C:\Program Files (x86)\Jenkins\config.xml
-    type: allow
-    rights: Read,Write,Modify,FullControl,Delete
-    state: present
+#- name: Allow Administrator
+#  win_acl:
+#    user: Administrator
+#    path: C:\Program Files (x86)\Jenkins\config.xml
+#    type: allow
+#    rights: Read,Write,Modify,FullControl,Delete
+#    state: present
 
 - name: Create init.d groovy dir
   win_file:
     path: C:\Program Files (x86)\Jenkins\init.groovy.d
     state: directory
 
+- name: Copy to init.d.groovy
+  win_copy:
+    force: yes
+    src: init/startup.groovy
+    dest: C:\Program Files (x86)\Jenkins\init.groovy.d\start.groovy
+
+- name: Copy over jobs groovy to seed jobs
+  win_copy:
+    force: yes
+    src: init/jobs.groovy
+    dest: C:\Program Files (x86)\Jenkins\jobs.groovy
+
 - name: Restart to pickup init password
   win_service:
     name: jenkins
     state: restarted
+

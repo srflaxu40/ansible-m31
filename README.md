@@ -1,7 +1,6 @@
 # ansible-m31
 
-Run, and provision your infrastructure with Ansible code against Amazon's Cloud (AWS).
-Test your code on-the-fly with ansible-kitchen, and docker for mac.
+Run, and provision against Amazon's Cloud (AWS).
 
 ### TABLE OF CONTENTS
 

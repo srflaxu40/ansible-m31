@@ -1,0 +1,41 @@
+# jenkins-slave-windows.yml
+# installs jenkins slave on windows
+
+- name: Install multiple packages
+  win_chocolatey:
+    name: '{{ item }}'
+    state: present
+  with_items:
+  - directx
+  - dotnetcore-sdk
+  - jfrog-cli
+  - jre8
+  - javaruntime
+  - kb2999226
+  - python
+  - unity-il2cpp
+  - visualstudio2017professional
+  - visualstudio2017-workload-nativedesktop
+
+- name: Install P4 cli
+  win_chocolatey:
+    name: p4
+
+- name: Update PATH for Java
+  win_environment:
+    state: present
+    name: JAVA_HOME
+    value: C:\Program Files (x86)\Java\jre1.8.0_171\bin
+    level: machine
+
+ 
+- name: Copy Slave ps1 script over
+  win_template:
+    src: slave-connect-02.ps1
+    dest: C:\Program Files (x86)\Java\slave-connect.ps1
+
+
+- name: Run jar and connect to Jenkins master
+  win_shell:  .\slave-connect.ps1
+  args:
+    chdir: C:\Program Files (x86)\Java\

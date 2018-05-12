@@ -1,4 +1,4 @@
-# jenkins-windows.yml
+# jenkins-master-windows.yml
 # installs jenkins master on windows
 
 - name: Install multiple packages
@@ -6,7 +6,7 @@
     name: '{{ item }}'
     state: present
   with_items:
-  - android-sdk
+  #- android-sdk
   - directx
   - dotnetcore-sdk
   - jfrog-cli
@@ -16,16 +16,16 @@
   - kb2999226
   - python
   - unity-il2cpp
-  - vcredist-all
+  #- vcredist-all
   - visualstudio2017professional
   - visualstudio2017-workload-nativedesktop
   #- windows-sdk-10.0
   #- visualstudio2017-workload-universal
 
-- name: Install P4 cli
-  win_chocolatey:
-    name: p4
-    version: '2015.2'
+#- name: Install P4 cli
+#  win_chocolatey:
+#    name: p4
+#    version: '2015.2'
 
 - name: Remove auto init password file
   win_file:
@@ -33,22 +33,17 @@
     path: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
     state: absent
 
-#- name: Restart to pickup init password
-#  win_service:
-#    name: jenkins
-#    state: stopped
-
 - name: Copy initPassword file to Jenkins Master instance
   win_copy:
     force: yes
     src: initialAdminPassword
     dest: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
 
-#- name: Copy base config
-#  win_copy:
-#    force: yes
-#    src: config.xml
-#    dest: C:\Program Files (x86)\Jenkins\config.xml
+- name: Copy base config
+  win_copy:
+    force: yes
+    src: config.xml
+    dest: C:\Program Files (x86)\Jenkins\config.xml
 
 #- name: Allow Administrator
 #  win_acl:
@@ -66,14 +61,20 @@
 - name: Copy to init.d.groovy
   win_copy:
     force: yes
-    src: init/startup.groovy
-    dest: C:\Program Files (x86)\Jenkins\init.groovy.d\start.groovy
+    src: init/a.groovy
+    dest: C:\Program Files (x86)\Jenkins\init.groovy.d\a.groovy
+
+- name: Copy to init.d.groovy
+  win_copy:
+    force: yes
+    src: init/b.groovy
+    dest: C:\Program Files (x86)\Jenkins\init.groovy.d\b.groovy
 
 - name: Copy over jobs groovy to seed jobs
   win_copy:
     force: yes
-    src: init/jobs.groovy
-    dest: C:\Program Files (x86)\Jenkins\jobs.groovy
+    src: init/jobs.dsl
+    dest: C:\Program Files (x86)\Jenkins\jobs.dsl
 
 - name: Restart to pickup init password
   win_service:

@@ -1,0 +1,8 @@
+---
+# Vars
+
+MASTER_HOSTNAME: 127.0.0.1
+MASTER_PORT: 8080
+AGENT_NAME: windows-slave-01
+ansible_password: default
+

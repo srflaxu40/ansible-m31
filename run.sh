@@ -9,7 +9,7 @@
 # SKIP (bool) = true or false. If true, will not spin up a new EC2 instance and will provision it 
 # with the play book specified as ROLE.
 
-if [  "$#" -ne 4 ]; then
+if [  "$#" -ne 5 ]; then
 echo "
 USAGE:
 
@@ -59,7 +59,6 @@ export SED_ENV=`echo $TAG_ENV | sed 's/-/_/g'`
 ansible-playbook ${ROLE}.yml -i ec2.py \
                              -u ubuntu \
                              --private-key=$id_rsa \
-                             --vault-password-file ./.vault_pass \
                              -vvvv \
                              --extra-vars "tag_name=${SED_NAME} tag_environment=${SED_ENV}" \
                              --tags "configure,deploy,create"

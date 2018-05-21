@@ -59,7 +59,8 @@
     "ami_name": "commons-{{timestamp}}",
     "tags": {
       "OS_Version": "Ubuntu v16.04",
-      "OS": "{{user `tag_name`}}"
+      "OS": "{{user `tag_name`}}",
+      "Name": "commons-{{timestamp}}"
     }
   }]
 }

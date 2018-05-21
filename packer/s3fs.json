@@ -58,7 +58,8 @@
     "ami_name": "s3fs-{{timestamp}}",
     "tags": {
       "OS_Version": "Ubuntu v16.04",
-      "OS": "{{user `tag_name`}}"
+      "OS": "{{user `tag_name`}}",
+      "Name": "s3fs-{{timestamp}}"
     }
   }]
 }

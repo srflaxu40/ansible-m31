@@ -1,0 +1,30 @@
+# task: revoke
+
+- name: Copy over revocation script
+  template: src=revoke.sh.j2 dest=/home/{{ ansible_ssh_user }}/openvpn-ca/revoke.sh mode=0755
+            owner={{ ansible_user }}
+
+- name: Copy over server configuration
+  copy: src=server-crl.conf dest=/etc/openvpn/server.conf mode=0644 owner=root group=root
+
+- name: Revoke all
+  shell: /home/{{ ansible_ssh_user }}/openvpn-ca//clean-all
+  args:
+    executable: /bin/bash
+    chdir:  /home/{{ ansible_ssh_user }}/openvpn-ca/
+  become: yes
+
+- name: Revoke users
+  shell: /home/{{ ansible_ssh_user }}/openvpn-ca/revoke.sh {{ item }} 
+  args:
+    executable: /bin/bash
+    chdir: /home/{{ ansible_ssh_user }}/openvpn-ca
+  become: yes
+  with_items:
+    - "{{ users }}"
+
+- name: Restart openvpn server
+  systemd:
+    name: openvpn@server
+    state: restarted
+    daemon_reload: yes

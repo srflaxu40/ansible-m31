@@ -39,7 +39,7 @@
       Organizational Unit Name:
         - "Company"
       Common Name:
-        - "Dinklage Mumbai CA"
+        - "Prominent Edge CA"
       Name \[server\]:
         - "Server"
       Email Address:
@@ -65,7 +65,7 @@
       Organizational Unit Name:
         - "Company"
       Common Name:
-        - "Dinklage Mumbai Cert"
+        - "Prominent Edge Cert"
       Name \[server\]:
         - "Server"
       Email Address:
@@ -113,7 +113,7 @@
       Organizational Unit Name:
         - "Company"
       Common Name:
-        - "Dinklage MUMBAI"
+        - "Prominent Edge CA"
       Name \[server\]:
         - "Server"
       Email Address:
@@ -168,7 +168,7 @@
   shell: curl http://169.254.169.254/latest/meta-data/public-ipv4
   register: public_ip
 
-- name: Copy over base configuration`
+- name: Copy over base configuration
   template: src=base.conf.j2 dest=/home/{{ ansible_ssh_user }}/client-configs/base.conf mode=0755
             owner={{ ansible_user }}
 

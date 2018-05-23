@@ -1,3 +1,2 @@
 .kitchen*
 *retry
-ansible_env

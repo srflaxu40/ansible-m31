@@ -1,0 +1,21 @@
+<LDAP>
+# LDAP server URL
+URL             ldap://ldap.jumpcloud.com
+# Bind DN (If your LDAP server doesn't support anonymous binds)
+BindDN          {{ bind_dn }}
+# Bind Password cn=vmail password
+Password      {{ password }}
+
+# Network timeout (in seconds)
+Timeout         30
+
+</LDAP>
+
+<Authorization>
+# Base DN
+BaseDN          "{{ base_dn }}"
+# User Search Filter
+#SearchFilter    "(&(objectClass=mailUser)(accountStatus=active)(enabledService=vpn))"
+# Require Group Membership
+#RequireGroup    false
+</Authorization>

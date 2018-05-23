@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd /home/ubuntu/openvpn-ca
+
+source vars
+
+./revoke-full $1
+
+cp keys/crl.pem /etc/openvpn/
+
+

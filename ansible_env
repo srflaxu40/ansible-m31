@@ -7,38 +7,44 @@
 # in order to utilize the various plays in this repo:
 # - 443 (VPN tunnel port)
 # - 22 (SSH port)
-export SG_ID=sg-04cd9876
+export SG_ID=sg-04b6d2a9336caa91e
 
 # The subnet of your instance (public)
 # For use with openvpn
-export SUBNET_ID=subnet-9639d1b9
+export SUBNET_ID=subnet-07f4fc5b56b8c5c2f
 
 # Private subnet
 # For use with instances that do not require public access.
-export PRIVATE_SUBNET_ID=subnet-90093b9c
+export PRIVATE_SUBNET_ID=subnet-a4c649c0
 
-export AMI_ID=ami-cd0f5cb6
+# server instance will be tagged TAG_NAME-TAG_ENV
+export TAG_NAME=asdfasdf
+export TAG_ENV=asdfasdf
+
+# ubuntu 16
+export AMI_ID=ami-0189d76e
 
 # IAM Role with sufficient permissions to read/write to s3 and access to EC2 (read/write)
-export IAM_ROLE="role-deploy"
+export IAM_ROLE="dinklage"
+
+# A private key corresponding to an IAM key pair created already in AWS
+export SSH_KEY=~/.ssh/dinklage
 
 # The name of th aforementioned key in AWS
-export SSH_KEY=production-vpc-us-east-1
+export SSH_KEY=dinklage
 
 export SSH_USER="ubuntu"
 
 # AWS Region
-export REGION=us-east-1
-
-# You do not need to mess with these unless you dare to use docker / kitchen 
-export REPO=stategine
-export PLAYBOOK=ec2.yml
+export REGION=ap-south-1
 
 # open-ca environment variables
 # These are used when running the ./build-ca step of openvpn setup.
 # You can see this in roles/openvpn/tasks/configure.yml 
 export ORG_COUNTRY=US
 export ORG_PROVINCE=CA
-export ORG_LOCATION=Oakland
-export ORG_NAME="Prominent Edge"
+export ORG_LOCATION=Hollywood
+export ORG_NAME="dinklage"
 
+# The environment (can be anything it is more of an identifier for tagging / provisioning)
+export ENVIRONMENT=asdfasdf

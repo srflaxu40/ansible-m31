@@ -1,0 +1,15 @@
+# task: logs
+
+
+- name: Get and install filebeat
+  apt:
+    deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.3-amd64.deb
+  become: yes
+
+- name: Copy Over configuration script
+  template: src=filebeat.yml.j2 dest=/etc/filebeat/filebeat.yml  mode=0755 owner=root
+
+- name: Start filebeat
+  service:
+    name: filebeat
+    state: started 

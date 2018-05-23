@@ -1,7 +1,26 @@
 ---
 # Variables for ec2 role
 
-org_country: "{{ lookup('env','ORG_COUNTRY') }}"
-org_province: "{{ lookup('env','ORG_PROVINCE') }}"
-org_location: "{{ lookup('env','ORG_LOCATION') }}"
-org_name: "{{ lookup('env','ORG_NAME') }}"
+org_country: "US"
+org_province: "Virginia"
+org_location: "Nokesville"
+org_name: "Prominent Edge"
+
+password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          61616361376430336461656135326466666663393838616463316163313961633762646137343363
+          3763343931343161303262656439666331303666623732310a346266633438343562346237623039
+          62653333663939353661386534306338303066333435363736313430656265643830363834353238
+          6631303563356537300a346165306263393239653963653066356631646466333961386564303163
+          65383935653865643936646431313163333839353934356330343533303736646362
+
+env: development
+
+users:
+  - hpotter
+  - pdlinkage
+
+# JumpCloud Specific things
+bind_dn: "user=blah,group=blah,dc=blah"
+bind_dn: "user=blah,group=blah,dc=blah"
+

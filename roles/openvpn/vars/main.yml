@@ -16,14 +16,10 @@ password: !vault |
 
 env: development
 
-users:
-  - hpotter
-  - pdlinkage
-
 # LDAP Provider Specific things
-bind_dn: "user=blah,group=blah,dc=blah"
-bind_user_dn: "user=blah,group=blah,dc=blah"
-bind_url: ""
-bind_password: ""
-base_dn: ""
+bind_user_dn: "{{ lookup('env','BIND_USER_DN') }}"
+bind_url: "{{ lookup('env','BIND_URL') }}"
+bind_password: "{{ lookup('env','BIND_PASSWORD') }}"
+base_dn: "{{ lookup('env','BASE_DN') }}"
+s3_bucket: "{{ lookup('env', 'S3_BUCKET') }}"
 

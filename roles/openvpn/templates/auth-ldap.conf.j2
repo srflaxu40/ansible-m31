@@ -3,7 +3,7 @@
 URL ldap://{{ bind_url }}
 # Bind DN (If your LDAP server doesn't support anonymous binds)
 #BindDN admin@test.com
-BindDN uid={{ bind_user_dn }}
+BindDN {{ bind_user_dn }}
 #BindDN peldap
 
 # Bind Password

@@ -165,6 +165,16 @@
     state: directory
     mode: 0700
 
+- name: Make openvpn auth dir
+  file:
+    path: /etc/openvpn/auth/
+    state: directory
+    mode: 0644
+
+- name: Copy over auth ldap config
+  template: src=auth-ldap.conf.j2 dest=/etc/openvpn/auth/auth-ldap.conf mode=0644
+            owner={{ ansible_user }}
+
 - name: get public IP
   shell: curl http://169.254.169.254/latest/meta-data/public-ipv4
   register: public_ip
@@ -193,8 +203,14 @@
     mode: 0755
 
 - name: Create client configs
-  shell: /home/{{ ansible_ssh_user }}/client-configs/make_config.sh client1
+  shell: /home/{{ ansible_ssh_user }}/client-configs/make_config.sh global
   become: yes
   args:
     chdir: /home/{{ ansible_ssh_user }}/client-configs/
 
+#- name: Copy configs to S3
+#  aws_s3:
+#    bucket: "{{ s3_bucket }}"
+#    object: /configs/global.ovpn
+#    src: /home/{{ ansible_ssh_user }}/client-configs/files/global.ovpn
+#    mode: put

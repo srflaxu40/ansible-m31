@@ -8,6 +8,7 @@
   with_items:
        - openvpn
        - easy-rsa
+       - openvpn-auth-ldap
 
 - name: Copy easy-rsa template
   shell: make-cadir /home/{{ ansible_ssh_user }}//openvpn-ca

@@ -20,7 +20,10 @@ users:
   - hpotter
   - pdlinkage
 
-# JumpCloud Specific things
+# LDAP Provider Specific things
 bind_dn: "user=blah,group=blah,dc=blah"
-bind_dn: "user=blah,group=blah,dc=blah"
+bind_user_dn: "user=blah,group=blah,dc=blah"
+bind_url: ""
+bind_password: ""
+base_dn: ""
 

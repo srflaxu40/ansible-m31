@@ -7,36 +7,36 @@
 # in order to utilize the various plays in this repo:
 # - 443 (VPN tunnel port)
 # - 22 (SSH port)
-export SG_ID=sg-04b6d2a9336caa91e
+export SG_ID=sg-9b98cde9
 
 # The subnet of your instance (public)
 # For use with openvpn
-export SUBNET_ID=subnet-07f4fc5b56b8c5c2f
+export SUBNET_ID=subnet-9639d1b9
 
 # Private subnet
 # For use with instances that do not require public access.
 export PRIVATE_SUBNET_ID=subnet-a4c649c0
 
 # server instance will be tagged TAG_NAME-TAG_ENV
-export TAG_NAME=asdfasdf
-export TAG_ENV=asdfasdf
+export TAG_NAME=ovpn
+export TAG_ENV=ldap-test
 
 # ubuntu 16
-export AMI_ID=ami-0189d76e
+export AMI_ID=ami-41e0b93b
 
 # IAM Role with sufficient permissions to read/write to s3 and access to EC2 (read/write)
-export IAM_ROLE="dinklage"
+export IAM_ROLE="role-deploy"
 
 # A private key corresponding to an IAM key pair created already in AWS
-export SSH_KEY=~/.ssh/dinklage
+export SSH_KEY=~/.ssh/statengine-development.pem
 
 # The name of th aforementioned key in AWS
-export SSH_KEY=dinklage
+export SSH_KEY=statengine-development
 
 export SSH_USER="ubuntu"
 
 # AWS Region
-export REGION=ap-south-1
+export REGION=us-east-1
 
 # open-ca environment variables
 # These are used when running the ./build-ca step of openvpn setup.
@@ -47,4 +47,11 @@ export ORG_LOCATION=Hollywood
 export ORG_NAME="dinklage"
 
 # The environment (can be anything it is more of an identifier for tagging / provisioning)
-export ENVIRONMENT=asdfasdf
+export ENVIRONMENT=ldap-test
+
+# LDAP creds (JumpCloud is the example):
+export BIND_USER_DN="uid=pdlinkage,ou=Users,o=12345,dc=jumpcloud,dc=com"
+export BIND_URL="ldap.providercom"
+export BIND_PASSWORD="ShakaZulu"
+export BASE_DN="ou=Users,o=12345,dc=jumpcloud,dc=com"
+export S3_BUCKET="bucket-bucket"

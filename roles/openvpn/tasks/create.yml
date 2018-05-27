@@ -1,0 +1,46 @@
+# task: create
+
+- name: Copy over key builder script
+  template: src=build-keys.sh.j2 dest=/home/{{ ansible_ssh_user }}/openvpn-ca/build-keys.sh mode=0755
+            owner={{ ansible_user }}
+
+- name: Build Keys
+  expect:
+    command: bash /home/{{ ansible_ssh_user }}/openvpn-ca/build-keys.sh {{ item }}
+    chdir: /home/{{ ansible_ssh_user }}/openvpn-ca
+    responses:
+      Country Name:
+        - "{{ org_country }}"
+      State or Province Name:
+        - "{{ org_province }}"
+      Locality Name:
+        - "{{ org_location }}" 
+      Organization Name:
+        - "{{ org_name }}"
+      Organizational Unit Name:
+        - "Company"
+      Common Name:
+       - "{{ item }}"
+      Name \[server\]:
+        - "Server"
+      Email Address:
+        - "dummyemail@acme.com"
+      challenge password:
+        - ""
+      An optional company name:
+        - ""
+      Sign the certificate:
+        - "y"
+      commit:
+        - "y"
+  with_items:
+    - "{{ users }}"
+
+- name: Create client OVPN configs
+  shell: /home/{{ ansible_ssh_user }}/client-configs/make_config.sh {{ item }}
+  become: yes 
+  args:
+    chdir: /home/{{ ansible_ssh_user }}/client-configs/
+  with_items:
+    - "{{ users }}"
+

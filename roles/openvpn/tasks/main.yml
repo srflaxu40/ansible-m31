@@ -3,5 +3,9 @@
   tags: ['configure']
 - include: deploy.yml
   tags: ['deploy']
+- include: revoke.yml
+  tags: ['revoke']
+- include: create.yml
+  tags: ['create']
 - include: logs.yml
   tags: ['logs']

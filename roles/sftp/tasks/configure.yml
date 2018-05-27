@@ -1,0 +1,149 @@
+# task: configure
+
+- name: Create sftp group
+  group:
+    name: sftp_users
+    state: present
+  become: yes
+
+- name: Add users
+  user:
+    name: "{{ item }}"
+    groups: sftp_users
+    shell: /usr/sbin/nologin
+    append: yes
+    comment: "sftp_users"
+    state: present
+  become: true
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Make sftp dir
+  file:
+    path: /mnt/{{ item }}
+    state: directory
+    mode: 0700
+    group: sftp_users
+    owner: "{{ item }}"
+  become: yes 
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Create a 2048-bit SSH key for user {{ item }} in ~{{ item }}/.ssh/id_rsa
+  user:
+    name: "{{ item }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+  become: yes
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Make authorized keys
+  shell: cat /home/{{ item }}/.ssh/id_rsa.pub > /home/{{ item }}/.ssh/authorized_keys
+  with_items:
+    - "{{ sftp_users }}"
+
+# Copy down keys before putting them back in the bucket; this ensures current clients
+# have the same SFTP keys as before.
+- name: Get private keys
+  aws_s3:
+    bucket: "{{ s3_bucket }}"
+    object: "{{ item }}/id_rsa"
+    dest: "/home/{{ item }}/.ssh/id_rsa"
+    mode: get
+  ignore_errors: yes 
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Get public keys
+  aws_s3:
+    bucket: "{{ s3_bucket }}"
+    object: "{{ item }}/id_rsa.pub"
+    dest: "/home/{{ item }}/.ssh/id_rsa.pub"
+    mode: get
+  ignore_errors: yes 
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Get Auth keys
+  aws_s3:
+    bucket: "{{ s3_bucket }}"
+    object: "{{ item }}/authorized_keys"
+    dest: "/home/{{ item }}/.ssh/authorized_keys"
+    mode: get
+  ignore_errors: yes 
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Update permissions auth keys
+  file:
+    path: /home/{{ item }}/.ssh/authorized_keys
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0600
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Update permissions priv key
+  file:
+    path: /home/{{ item }}/.ssh/id_rsa
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0600
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Update permissions pub key
+  file:
+    path: /home/{{ item }}/.ssh/id_rsa.pub
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0644
+  with_items:
+    - "{{ sftp_users }}"
+
+# Now upload all keys per each user so we have them for next bake / persistence:
+- name: Put private keys
+  aws_s3:
+    bucket: "{{ s3_bucket }}"
+    object: "{{ item }}/id_rsa"
+    src: "/home/{{ item }}/.ssh/id_rsa"
+    mode: put
+  ignore_errors: yes 
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Put public keys
+  aws_s3:
+    bucket: "{{ s3_bucket }}"
+    object: "{{ item }}/id_rsa.pub"
+    src: "/home/{{ item }}/.ssh/id_rsa.pub"
+    mode: put
+  ignore_errors: yes 
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Put Auth keys
+  aws_s3:
+    bucket: "{{ s3_bucket }}"
+    object: "{{ item }}/authorized_keys"
+    src: "/home/{{ item }}/.ssh/authorized_keys"
+    mode: put
+  ignore_errors: yes 
+  with_items:
+    - "{{ sftp_users }}"
+
+- name: Copy over new sshd config
+  copy:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Restart ssh daemon
+  service:
+    name: ssh
+    state: restarted
+

@@ -169,4 +169,10 @@ ansible-playbook -i windows-hosts -e "target=jknepper ansible_password=asdfio12!
 ```
 ansible-playbook -i windows-hosts -e "target=jknepper ansible_password=asdfio12!@ MASTER_HOSTNAME=10.0.0.98 AGENT_NAME=windows-agent-01" jenkins-slave.yml --tags="slave" -vvv
 ```
+----
+
+# SFTP:
+
+* Be sure to update the `S3FS_BUCKET` variable in `ansible_env`
+
 

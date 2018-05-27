@@ -1,0 +1,6 @@
+---
+# Variables for ec2 role
+s3_bucket: "bucket-bucket"
+sftp_users:
+  - client1
+  - client2

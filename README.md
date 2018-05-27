@@ -108,6 +108,11 @@ ORG_COUNTRY=US
 ORG_PROVINCE=CA
 ORG_LOCATION=Oakland
 ORG_NAME="your org"
+BIND_USER_DN="uid=pdlinkage,ou=Users,o=12345,dc=jumpcloud,dc=com"
+BIND_URL="ldap.providercom"
+BIND_PASSWORD="ShakaZulu"
+BASE_DN="ou=Users,o=12345,dc=jumpcloud,dc=com"
+S3_BUCKET="bucket-bucket"
 ```
 
 * Now source the file:

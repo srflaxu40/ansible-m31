@@ -58,3 +58,6 @@ export SEARCH_FILTER="(&(objectClass=posixGroup)(cn=ldap-users))"
 export BASE_DN="ou=Users,o=12345,dc=jumpcloud,dc=com"
 export S3_BUCKET="bucket-bucket"
 export S3FS_BUCKET="bucket-bucket"
+
+# Logstash URL for Filebeat logs:
+LOGSTASH_URL="http://logstash.domain.com:5044"

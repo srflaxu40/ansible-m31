@@ -51,11 +51,13 @@ RequireGroup false
 # Add non-group members to a PF table (disabled)
 #PFTable ips_vpn_users
 
-#<Group>
-#BaseDN "{{ base_dn }}"
-#SearchFilter "(&(objectClass=posixGroup)(cn=ldapusersiaff))"
-#MemberAttribute "memberUid"
+<Group>
+BaseDN "cn=ldap-users,ou=Users,o=5a9d7f43d0ebbd6eb6146f76,dc=jumpcloud,dc=com"
+BaseDN "{{ group_dn }}"
+SearchFilter "{{ search_filter }}"
+SearchFilter "(&(objectClass=posixGroup)(cn=ldap-users))"
+MemberAttribute "uid"
 # Add group members to a PF table (disabled)
 #PFTable ips_vpn_eng
-#</Group>
+</Group>
 </Authorization>

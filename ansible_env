@@ -51,8 +51,10 @@ export ENVIRONMENT=ldap-test
 
 # LDAP creds (JumpCloud is the example):
 export BIND_USER_DN="uid=pdlinkage,ou=Users,o=12345,dc=jumpcloud,dc=com"
-export BIND_URL="ldap.providercom"
+export BIND_URL="ldap.provider.com"
 export BIND_PASSWORD="ShakaZulu"
+export GROUP_DN="cn=ldap-users,ou=Users,o=12345,dc=jumpcloud,dc=com"
+export SEARCH_FILTER="(&(objectClass=posixGroup)(cn=ldap-users))"
 export BASE_DN="ou=Users,o=12345,dc=jumpcloud,dc=com"
 export S3_BUCKET="bucket-bucket"
 export S3FS_BUCKET="bucket-bucket"

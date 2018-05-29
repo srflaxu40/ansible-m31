@@ -20,6 +20,9 @@ env: development
 bind_user_dn: "{{ lookup('env','BIND_USER_DN') }}"
 bind_url: "{{ lookup('env','BIND_URL') }}"
 bind_password: "{{ lookup('env','BIND_PASSWORD') }}"
+group_dn: "{{ lookup('env', 'GROUP_DN') }}"
+search_filter: "{{ lookup('env', 'SEARCH_FILTER') }}"
 base_dn: "{{ lookup('env','BASE_DN') }}"
+
 s3_bucket: "{{ lookup('env', 'S3_BUCKET') }}"
 

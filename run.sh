@@ -61,5 +61,5 @@ ansible-playbook ${ROLE}.yml -i ec2.py \
                              --private-key=$id_rsa \
                              -vvvv \
                              --extra-vars "tag_name=${SED_NAME} tag_environment=${SED_ENV}" \
-                             --tags "configure,deploy,create"
+                             --tags "configure,deploy"
 

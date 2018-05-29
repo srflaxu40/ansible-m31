@@ -45,6 +45,6 @@ tags: ['vpn-{{ env }}']
 #-------------------------- Elasticsearch output ------------------------------
 
 output.logstash:
-  hosts: ["http://logstash.domain.com:5044"]
+  hosts: ["{{ logstash_url }}"]
 
 

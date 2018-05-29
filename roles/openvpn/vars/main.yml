@@ -26,3 +26,6 @@ base_dn: "{{ lookup('env','BASE_DN') }}"
 
 s3_bucket: "{{ lookup('env', 'S3_BUCKET') }}"
 
+
+# Logstash 
+logstash_url: "{{ lookup('env', 'LOGSTASH_URL') }}"

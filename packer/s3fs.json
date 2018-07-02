@@ -15,7 +15,7 @@
     },  
     {
       "type": "ansible-local",
-      "playbook_file": "s3fs.yml",
+      "playbook_file": "./playbooks/s3fs.yml",
       "role_paths": [
         "./roles/python",
         "./roles/s3fs",

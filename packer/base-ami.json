@@ -15,7 +15,7 @@
     },  
     {
       "type": "ansible-local",
-      "playbook_file": "./playbooks/base-ami.yml",
+      "playbook_file": "base-ami.yml",
       "role_paths": [
         "./roles/python",
         "./roles/base-ami",

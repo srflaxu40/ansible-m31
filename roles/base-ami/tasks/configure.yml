@@ -19,3 +19,11 @@
     group: root
     mode: 0644
 
+- name: Update from distros
+  become: yes
+  copy:
+    src: 50unattended-upgrades
+    dest: And /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    group: root
+    mode: 0644

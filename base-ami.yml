@@ -10,3 +10,4 @@
     - python
     - hosts
     - base-ami
+    - cloudhealth-agent

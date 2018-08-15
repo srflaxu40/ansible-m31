@@ -19,7 +19,8 @@
       "role_paths": [
         "./roles/python",
         "./roles/base-ami",
-        "./roles/hosts"
+        "./roles/hosts",
+        "./roles/cloudhealth-agent"
       ],
       "extra_arguments": [ "-vv", "--tags", "\"{{user `RUN_LIST`}}\"", "-e", "\"tag_name={{user `tag_name`}} tag_environment={{user `tag_environment`}} cht_unique_registration_code={{user `cht_unique_registration_code`}}\"" ]
     }

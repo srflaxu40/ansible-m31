@@ -1,9 +1,15 @@
 # Task - configure cloudhealth agent
 ---
 - name: Ensure the agent is installed
-  command:
-    curl https://s3.amazonaws.com/remote-collector/agent/v18/install_cht_perfmon.sh -o /tmp/install_cht_perfmon.sh -s &&
-    /tmp/install_cht_perfmon.sh 18 {{ cht_unique_registration_code }} aws
+  get_url:
+    url: https://s3.amazonaws.com/remote-collector/agent/v18/install_cht_perfmon.sh
+    dest: /tmp/install_cht_perfmon.sh
+    mode: 0755
+  sudo: yes
+
+- name: Execute cloudhealth script
+  shell: /tmp/install_cht_perfmon.sh 18 {{ cht_unique_registration_code }} aws
   args:
+    executable: /bin/bash
     creates: /opt/cht_perfmon
   sudo: yes

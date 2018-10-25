@@ -44,7 +44,7 @@ tags: ['vpn-{{ env }}']
 #fields:
 #-------------------------- Elasticsearch output ------------------------------
 
-output.logstash:
-  hosts: ["{{ logstash_url }}"]
-
+output.elasticsearch:
+  hosts: ["http://{{ es_host }}:9200"]
+  index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"
 

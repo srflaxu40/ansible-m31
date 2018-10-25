@@ -13,3 +13,8 @@
   service:
     name: filebeat
     state: started 
+
+- name: restart filebeat
+  service:
+    name: filebeat
+    state: restarted

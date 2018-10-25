@@ -13,7 +13,7 @@ if [  "$#" -ne 5 ]; then
 echo "
 USAGE:
 
-  ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
+  ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$ENVIRONMENT \$BOOL
  
   \$PRIVATE_KEY_PATH - the path to your private key PEM file downloades when you created an IAM key in AWS.
   \$ROLE - the role (play) you wish to run; under ./roles/

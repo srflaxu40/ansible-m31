@@ -113,6 +113,7 @@ BIND_URL="ldap.providercom"
 BIND_PASSWORD="ShakaZulu"
 BASE_DN="ou=Users,o=12345,dc=jumpcloud,dc=com"
 S3_BUCKET="bucket-bucket"
+ES_HOST="es-logging.prominentedge.com"
 ```
 
 * Now source the file:

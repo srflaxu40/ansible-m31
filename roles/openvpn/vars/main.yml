@@ -26,4 +26,4 @@ base_dn: "{{ lookup('env','BASE_DN') }}"
 
 s3_bucket: "{{ lookup('env', 'S3_BUCKET') }}"
 
-es_host: "es-logging.prominentedge.com"
+es_host: "{{ lookup('env', 'ES_HOST') }}"

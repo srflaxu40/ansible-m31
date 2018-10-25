@@ -46,5 +46,4 @@ tags: ['vpn-{{ env }}']
 
 output.elasticsearch:
   hosts: ["http://{{ es_host }}:9200"]
-  index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"
 

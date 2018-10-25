@@ -39,7 +39,7 @@ filebeat.config.modules:
   # Period on which files under path should be checked for changes
   #reload.period: 10s
 
-tags: ['vpn-{{ env }}']
+tags: ['{{project_vpn}}-{{ env }}']
 
 #fields:
 #-------------------------- Elasticsearch output ------------------------------

@@ -27,3 +27,4 @@ base_dn: "{{ lookup('env','BASE_DN') }}"
 s3_bucket: "{{ lookup('env', 'S3_BUCKET') }}"
 
 es_host: "{{ lookup('env', 'ES_HOST') }}"
+project_vpn: "{{ lookup('env', 'PROJECT_VPN') }}"

@@ -60,4 +60,7 @@ export S3_BUCKET="bucket-bucket"
 export S3FS_BUCKET="bucket-bucket"
 
 # Logstash URL for Filebeat logs:
-LOGSTASH_URL="http://logstash.domain.com:5044"
+ES_HOST="http://es-logs.domain.com:5044"
+
+PROJECT_NAME="someproj-for-tags"
+

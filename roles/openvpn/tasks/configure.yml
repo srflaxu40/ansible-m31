@@ -215,3 +215,15 @@
     src: /home/{{ ansible_ssh_user }}/client-configs/files/global.ovpn
     mode: put
   ignore_errors: yes
+
+- name: Copy over sshd config
+  file:
+    path: /etc/ssh/sshd_config
+    state: file
+    mode: 0644
+
+- name: Restart openvpn
+  service:
+    name: openvpn
+    state: restarted
+  

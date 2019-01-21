@@ -1,10 +1,8 @@
 <LDAP>
 # LDAP server URL
-URL ldap://{{ bind_url }}
+URL ldaps://{{ bind_url }}
 # Bind DN (If your LDAP server doesn't support anonymous binds)
-#BindDN admin@test.com
 BindDN {{ bind_user_dn }}
-#BindDN peldap
 
 # Bind Password
 Password {{ bind_password }}
@@ -13,13 +11,13 @@ Password {{ bind_password }}
 Timeout 30
 
 # Enable Start TLS
-#TLSEnable no
+TLSEnable no
 
 # Follow LDAP Referrals (anonymously)
 FollowReferrals no
 
 # TLS CA Certificate File
-#TLSCACertFile /usr/local/etc/ssl/ca.pem
+#TLSCACertFile /usr/local/etc/ssl/jumpcloud.chain.pem
 
 # TLS CA Certificate Directory
 #TLSCACertDir /etc/ssl/certs

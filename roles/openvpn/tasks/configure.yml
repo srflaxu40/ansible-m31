@@ -171,6 +171,23 @@
     state: directory
     mode: 0644
 
+- name: Make openvpn auth dir
+  file:
+    path:  /usr/local/etc/ssl/
+    state: directory
+    mode: 0700
+    recurse: yes
+
+- name: Grab JumpCloud cert chain
+  shell: echo -n | openssl s_client -connect ldap.jumpcloud.com:636 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /usr/local/etc/ssl/jumpcloud.chain.pem
+  args:
+    executable: /bin/bash
+
+- file:
+    path: /usr/local/etc/ssl/jumpcloud.chain.pem
+    state: touch
+    mode: 0600
+
 - name: Copy over auth ldap config
   template: src=auth-ldap.conf.j2 dest=/etc/openvpn/auth/auth-ldap.conf mode=0644
             owner={{ ansible_user }}

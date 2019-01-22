@@ -228,7 +228,7 @@
 - name: Copy configs to S3
   s3:
     bucket: "{{ s3_bucket }}"
-    object: /configs/{{ project_vpn }}-global.ovpn
+    object: /configs/current-global.ovpn
     src: /home/{{ ansible_ssh_user }}/client-configs/files/global.ovpn
     mode: put
   ignore_errors: yes

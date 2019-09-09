@@ -19,10 +19,9 @@
       "role_paths": [
         "./roles/python",
         "./roles/base-ami",
-        "./roles/hosts",
-        "./roles/cloudhealth-agent"
+        "./roles/hosts"
       ],
-      "extra_arguments": [ "-vv", "--tags", "\"{{user `RUN_LIST`}}\"", "-e", "\"tag_name={{user `tag_name`}} tag_environment={{user `tag_environment`}} cht_unique_registration_code={{user `cht_unique_registration_code`}}\"" ]
+      "extra_arguments": [ "-vv", "--tags", "\"{{user `RUN_LIST`}}\"", "-e", "\"tag_name={{user `tag_name`}} tag_environment={{user `tag_environment`}}\"" ]
     }
   ],
   "variables": {
@@ -36,8 +35,7 @@
     "instance_type": "",
     "security_group_id": "",
     "subnet_id": "",
-    "IAM_ROLE": "",
-    "cht_unique_registration_code": ""
+    "IAM_ROLE": ""
   },
   "builders": [{
     "type": "amazon-ebs",

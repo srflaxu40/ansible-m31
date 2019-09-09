@@ -10,6 +10,15 @@
     state: present
     install_recommends: yes
 
+- name: Install Auditd apt packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes 
+  with_items:
+       - auditd
+       - audispd-plugins
+
 - name: Copy 20auto-upgrades file to proper place
   become: yes
   copy:

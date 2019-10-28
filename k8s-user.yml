@@ -1,0 +1,13 @@
+---
+# file: sftp.yml
+- name: Configure fuse-s3fs on server for sftp mounting of an s3 bucket
+  hosts: 127.0.0.1
+  connection: local
+  remote_user: ubuntu
+  become: yes 
+  gather_facts: False
+  roles:
+    - python
+    - hosts
+    - k8s-user
+    - sftp

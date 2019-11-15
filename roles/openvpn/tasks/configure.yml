@@ -8,7 +8,6 @@
   with_items:
        - openvpn
        - easy-rsa
-       - openvpn-auth-ldap
 
 - name: Copy easy-rsa template
   shell: make-cadir /home/{{ ansible_ssh_user }}//openvpn-ca
@@ -40,7 +39,7 @@
       Organizational Unit Name:
         - "Company"
       Common Name:
-        - "Prominent Edge CA"
+        - "Dinklage Mumbai CA"
       Name \[server\]:
         - "Server"
       Email Address:
@@ -66,7 +65,7 @@
       Organizational Unit Name:
         - "Company"
       Common Name:
-        - "Prominent Edge Cert"
+        - "Dinklage Mumbai Cert"
       Name \[server\]:
         - "Server"
       Email Address:
@@ -114,7 +113,7 @@
       Organizational Unit Name:
         - "Company"
       Common Name:
-        - "Prominent Edge CA"
+        - "Dinklage MUMBAI"
       Name \[server\]:
         - "Server"
       Email Address:
@@ -165,38 +164,11 @@
     state: directory
     mode: 0700
 
-- name: Make openvpn auth dir
-  file:
-    path: /etc/openvpn/auth/
-    state: directory
-    mode: 0644
-
-- name: Make openvpn auth dir
-  file:
-    path:  /usr/local/etc/ssl/
-    state: directory
-    mode: 0700
-    recurse: yes
-
-- name: Grab JumpCloud cert chain
-  shell: echo -n | openssl s_client -connect ldap.jumpcloud.com:636 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /usr/local/etc/ssl/jumpcloud.chain.pem
-  args:
-    executable: /bin/bash
-
-- file:
-    path: /usr/local/etc/ssl/jumpcloud.chain.pem
-    state: touch
-    mode: 0600
-
-- name: Copy over auth ldap config
-  template: src=auth-ldap.conf.j2 dest=/etc/openvpn/auth/auth-ldap.conf mode=0644
-            owner={{ ansible_user }}
-
 - name: get public IP
   shell: curl http://169.254.169.254/latest/meta-data/public-ipv4
   register: public_ip
 
-- name: Copy over base configuration
+- name: Copy over base configuration`
   template: src=base.conf.j2 dest=/home/{{ ansible_ssh_user }}/client-configs/base.conf mode=0755
             owner={{ ansible_user }}
 
@@ -220,27 +192,8 @@
     mode: 0755
 
 - name: Create client configs
-  shell: /home/{{ ansible_ssh_user }}/client-configs/make_config.sh global
+  shell: /home/{{ ansible_ssh_user }}/client-configs/make_config.sh client1
   become: yes
   args:
     chdir: /home/{{ ansible_ssh_user }}/client-configs/
 
-- name: Copy configs to S3
-  s3:
-    bucket: "{{ s3_bucket }}"
-    object: /configs/{{ project_vpn }}-current-global.ovpn
-    src: /home/{{ ansible_ssh_user }}/client-configs/files/global.ovpn
-    mode: put
-  ignore_errors: yes
-
-- name: Copy over sshd config
-  file:
-    path: /etc/ssh/sshd_config
-    state: file
-    mode: 0644
-
-- name: Restart openvpn
-  service:
-    name: openvpn
-    state: restarted
-  

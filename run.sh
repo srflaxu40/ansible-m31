@@ -13,7 +13,7 @@ if [  "$#" -ne 5 ]; then
 echo "
 USAGE:
 
-  ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$ENVIRONMENT \$BOOL
+  ./run.sh \$PRIVATE_KEY_PATH \$ROLE \$TAG_NAME \$BOOL
  
   \$PRIVATE_KEY_PATH - the path to your private key PEM file downloades when you created an IAM key in AWS.
   \$ROLE - the role (play) you wish to run; under ./roles/
@@ -61,5 +61,5 @@ ansible-playbook ${ROLE}.yml -i ec2.py \
                              --private-key=$id_rsa \
                              -vvvv \
                              --extra-vars "tag_name=${SED_NAME} tag_environment=${SED_ENV}" \
-                             --tags "configure,deploy"
+                             --tags "configure,deploy,create"
 

@@ -1,6 +1,6 @@
 # task: configure
 
-- name: Install APT Packages
+- name: Install Git
   apt:
     name: "{{ item }}"
     state: present
@@ -54,28 +54,12 @@
 - name: Create global s3fs creds file
   template: src=passwd-s3fs.j2 dest=/etc/passwd-s3fs  mode=0600 owner={{ ansible_ssh_user }}
 
-- name: Does mount point exist
-  stat:
-    path: /mnt
-  register: file_details
-
 - name: Make mount dir
   file:
     path: /mnt
     state: directory
-    mode: 0755
-    owner: root
-  when: file_details.stat.exists == False
+    mode: 0777
 
 - name: Add entry to fstab
-  lineinfile: 
-    path: /etc/fstab
-    regexp: "^s3fs.*"
-    line: "s3fs#{{ s3fs_bucket }} /mnt fuse _netdev,allow_other,iam_role=auto,mp_umask=022 0 0"
-  become: yes
-
-- name: Mount the bucket
-  shell: mount -a
-  become: yes
-  ignore_errors: yes
-
+  shell: |
+    echo 's3fs#{{ s3fs_bucket }} /mnt fuse _netdev,allow_other 0 0' >> /etc/fstab

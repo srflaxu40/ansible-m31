@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source vars
-./build-key global
+./build-key client1
 
 cd keys
 

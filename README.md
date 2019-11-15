@@ -108,13 +108,6 @@ ORG_COUNTRY=US
 ORG_PROVINCE=CA
 ORG_LOCATION=Oakland
 ORG_NAME="your org"
-BIND_USER_DN="uid=pdlinkage,ou=Users,o=12345,dc=jumpcloud,dc=com"
-BIND_URL="ldap.providercom"
-BIND_PASSWORD="ShakaZulu"
-BASE_DN="ou=Users,o=12345,dc=jumpcloud,dc=com"
-S3_BUCKET="bucket-bucket"
-ES_HOST="es-logging.prominentedge.com"
-PROJECT_VPN="prominentedge"
 ```
 
 * Now source the file:
@@ -171,10 +164,4 @@ ansible-playbook -i windows-hosts -e "target=jknepper ansible_password=asdfio12!
 ```
 ansible-playbook -i windows-hosts -e "target=jknepper ansible_password=asdfio12!@ MASTER_HOSTNAME=10.0.0.98 AGENT_NAME=windows-agent-01" jenkins-slave.yml --tags="slave" -vvv
 ```
-----
-
-# SFTP:
-
-* Be sure to update the `S3FS_BUCKET` variable in `ansible_env`
-
 

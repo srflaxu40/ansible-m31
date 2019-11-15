@@ -9,7 +9,3 @@
 - name: Install pyexpect
   pip: 
     name: pexpect
-
-- name: Install boto3
-  pip:
-    name: boto3

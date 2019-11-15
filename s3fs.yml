@@ -4,10 +4,9 @@
   hosts: 127.0.0.1
   connection: local
   remote_user: ubuntu
-  become: yes 
+  become: yes
   gather_facts: False
   roles:
     - python
     - hosts
     - s3fs
-    - sftp

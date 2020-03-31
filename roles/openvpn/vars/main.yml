@@ -28,3 +28,6 @@ s3_bucket: "{{ lookup('env', 'S3_BUCKET') }}"
 
 es_host: "{{ lookup('env', 'ES_HOST') }}"
 project_vpn: "{{ lookup('env', 'PROJECT_VPN') }}"
+
+openvpn_version: "2.4.4-2ubuntu1"
+

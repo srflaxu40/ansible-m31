@@ -6,7 +6,7 @@
     state: present
     update_cache: yes
   with_items:
-       - openvpn
+       - openvpn={{ openvpn_version }}
        - easy-rsa
        - openvpn-auth-ldap
 
